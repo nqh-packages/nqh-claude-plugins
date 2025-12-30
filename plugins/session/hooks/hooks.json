@@ -1,0 +1,16 @@
+{
+  "description": "Captures session ID on session start for /session:restart and /session:fork",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/session-capture.sh",
+            "timeout": 500
+          }
+        ]
+      }
+    ]
+  }
+}

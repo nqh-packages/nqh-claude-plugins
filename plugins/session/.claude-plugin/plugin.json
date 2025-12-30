@@ -1,0 +1,10 @@
+{
+  "name": "session",
+  "version": "3.0.0",
+  "description": "Restart or fork Claude sessions - no arguments needed",
+  "author": {
+    "name": "NQH"
+  },
+  "keywords": ["session", "restart", "fork", "resume", "workflow"],
+  "hooks": "./hooks/hooks.json"
+}

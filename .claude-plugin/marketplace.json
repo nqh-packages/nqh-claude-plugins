@@ -1,0 +1,12 @@
+{
+  "name": "nqh-plugins",
+  "description": "NQH Claude Code plugins marketplace",
+  "plugins": [
+    {
+      "name": "session",
+      "source": "./plugins/session",
+      "description": "Restart or fork Claude sessions - no arguments needed",
+      "version": "3.0.0"
+    }
+  ]
+}

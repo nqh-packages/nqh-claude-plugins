@@ -1,0 +1,7 @@
+{
+  "auto_execute": true,
+  "clipboard": true,
+  "terminal": "auto",
+  "model": "",
+  "flags": "--dangerously-skip-permissions"
+}

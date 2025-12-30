@@ -1,0 +1,11 @@
+# Local config overrides
+*.local.md
+*.local.json
+
+# macOS
+.DS_Store
+
+# Editor
+*.swp
+*.swo
+*~
