@@ -2,19 +2,20 @@
 # @what Session plugin shared library
 # @why DRY - avoid duplicating logic across commands
 
-# Config file location (relative to plugin root)
-CONFIG_FILE="${CLAUDE_PLUGIN_ROOT:-$(dirname "${BASH_SOURCE[0]}")}/config.json"
+# Config locations: project-first fallback to user
+CONFIG_FILE=""
 
 ensure_config() {
-  if [[ -f "$CONFIG_FILE" ]]; then
-    AUTO_EXECUTE=$(jq -r '.auto_execute // true' "$CONFIG_FILE")
-    USE_CLIPBOARD=$(jq -r '.clipboard // true' "$CONFIG_FILE")
-    TERMINAL_OVERRIDE=$(jq -r '.terminal // "auto"' "$CONFIG_FILE")
-    MODEL=$(jq -r '.model // ""' "$CONFIG_FILE")
-    CLAUDE_FLAGS=$(jq -r '.flags // ""' "$CONFIG_FILE")
-    export AUTO_EXECUTE USE_CLIPBOARD TERMINAL_OVERRIDE MODEL CLAUDE_FLAGS
+  local project_cfg="$(pwd)/.claude/.session-plugin-config.json"
+  local user_cfg="$HOME/.claude/.session-plugin-config.json"
+
+  # Project config takes priority, fallback to user config
+  if [[ -f "$project_cfg" ]]; then
+    CONFIG_FILE="$project_cfg"
+  elif [[ -f "$user_cfg" ]]; then
+    CONFIG_FILE="$user_cfg"
   else
-    # Coral: 209 (closest ANSI 256 to #d97757)
+    # No config found - show setup message
     echo ""
     echo ""
     echo -e "    \033[38;5;209m▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓\033[0m"
@@ -28,6 +29,14 @@ ensure_config() {
     echo ""
     return 1
   fi
+
+  # Load config values
+  AUTO_EXECUTE=$(jq -r '.auto_execute // true' "$CONFIG_FILE")
+  USE_CLIPBOARD=$(jq -r '.clipboard // true' "$CONFIG_FILE")
+  TERMINAL_OVERRIDE=$(jq -r '.terminal // "auto"' "$CONFIG_FILE")
+  MODEL=$(jq -r '.model // ""' "$CONFIG_FILE")
+  CLAUDE_FLAGS=$(jq -r '.flags // ""' "$CONFIG_FILE")
+  export AUTO_EXECUTE USE_CLIPBOARD TERMINAL_OVERRIDE MODEL CLAUDE_FLAGS CONFIG_FILE
 }
 
 show_error() {

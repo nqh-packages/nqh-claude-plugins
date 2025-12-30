@@ -1,6 +1,6 @@
 {
   "name": "session",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Restart or fork Claude sessions - no arguments needed",
   "author": {
     "name": "nqh-packages",
