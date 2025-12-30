@@ -1,6 +1,11 @@
 {
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "nqh-plugins",
   "description": "NQH Claude Code plugins marketplace",
+  "owner": {
+    "name": "nqh-packages",
+    "email": "dev@ngoquochuy.com"
+  },
   "plugins": [
     {
       "name": "session",
