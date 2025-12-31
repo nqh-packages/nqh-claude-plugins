@@ -57,18 +57,56 @@ nqh-claude-plugins/
 
 2. Register in `.claude-plugin/marketplace.json`
 
-3. Create `plugins/<name>/README.md` with:
-   - One-liner description (first line after `# Title`)
-   - Visual banner (first code block)
+3. Create `plugins/<name>/README.md` following the format below
 
 4. Commit triggers `build:readme` automatically via pre-commit hook
+
+## Plugin README Format
+
+```markdown
+# Plugin Name
+
+One-liner description (extracted to root README).
+
+<!-- VISUAL -->
+![Demo](assets/demo.gif)
+<!-- /VISUAL -->
+
+**Requirements**: dependencies...
+
+## Installation
+
+\`\`\`
+/plugin install plugin-name@nqh-plugins
+\`\`\`
+
+## Commands
+...
+
+---
+
+**vX.X.X** · changelog notes
+```
+
+| Element | Purpose | Propagates to Root |
+|---------|---------|-------------------|
+| Title | Plugin name | Yes (as link) |
+| One-liner | First line after title | Yes |
+| `<!-- VISUAL -->` | Image, GIF, or code block | Yes (path adjusted) |
+| Requirements | Dependencies | No |
+| Installation | Install command only (no marketplace) | Yes |
+| Commands/docs | Usage details | No |
+| Version | Bottom of file | No |
+
+**VISUAL markers**: Wrap any visual (image, GIF, code block) in `<!-- VISUAL -->` and `<!-- /VISUAL -->`. Image paths are auto-converted for root README.
 
 ## README Auto-Generation
 
 The root README is generated from plugin READMEs:
 - Extracts one-liner (first non-empty line after title)
 - Extracts install command (`/plugin install {name}@nqh-plugins`)
-- Extracts visual (first code block)
+- Extracts visual content between `<!-- VISUAL -->` markers
+- Converts relative image paths to `./plugins/{name}/...`
 - Pre-commit hook auto-stages README.md when plugin READMEs change
 
 ## Command Format
