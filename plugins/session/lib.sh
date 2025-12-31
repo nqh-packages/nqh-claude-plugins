@@ -4,16 +4,15 @@
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # FRAME RENDERING SYSTEM
-# Uses ANSI cursor positioning to guarantee visual alignment regardless of
-# Unicode character widths (emojis, CJK, etc.)
+# Uses explicit padding for terminal compatibility (cursor positioning not
+# supported in all terminal emulators)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 # Layout constants
 declare -r FRAME_WIDTH=48
 declare -r FRAME_INDENT=4
 declare -r CONTENT_MAX=42           # Max content chars (48 - 2 borders - 4 padding)
-declare -r RIGHT_PAD_COL=50         # Column where right padding starts
-declare -r RIGHT_BORDER_COL=52      # Column for right border (indent + frame width)
+declare -r INNER_WIDTH=46           # Inner width (48 - 2 borders)
 
 # Color palette
 declare -r C_RESET="\033[0m"
@@ -39,15 +38,24 @@ _bar() {
 # Empty line inside frame (just side borders)
 _framed_empty() {
   local color="${1:-$C_BLUE}"
-  printf "%${FRAME_INDENT}s${color}▓${C_RESET}" ""
-  printf "\033[${RIGHT_BORDER_COL}G${color}▓${C_RESET}\n"
+  printf "%${FRAME_INDENT}s${color}▓%${INNER_WIDTH}s▓${C_RESET}\n" "" ""
 }
 
-# Content line inside frame - cursor positioning ensures alignment
+# Content line inside frame - uses explicit padding for compatibility
 _framed_line() {
   local text="$1"
   local color="${2:-$C_BLUE}"
   local style="${3:-}"  # "bold", "dim", or empty
+
+  # Auto-truncate if too long
+  if [[ ${#text} -gt $CONTENT_MAX ]]; then
+    text="${text:0:$((CONTENT_MAX-3))}..."
+  fi
+
+  # Calculate padding needed (INNER_WIDTH - 2 left pad - 2 right pad - text length)
+  local text_len=${#text}
+  local pad_len=$(( INNER_WIDTH - 4 - text_len ))
+  [[ $pad_len -lt 0 ]] && pad_len=0
 
   # Left border + padding
   printf "%${FRAME_INDENT}s${color}▓${C_RESET}  " ""
@@ -64,8 +72,8 @@ _framed_line() {
   # Reset style
   [[ -n "$style" ]] && printf "${C_RESET}"
 
-  # Jump to column 50, print padding + right border
-  printf "\033[${RIGHT_PAD_COL}G  ${color}▓${C_RESET}\n"
+  # Right padding + border
+  printf "%${pad_len}s  ${color}▓${C_RESET}\n" ""
 }
 
 # Bare centered text (no side borders)
