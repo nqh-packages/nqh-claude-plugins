@@ -25,7 +25,8 @@ nqh-claude-plugins/
 ├── .claude-plugin/
 │   └── marketplace.json      # Registry of all plugins
 ├── .husky/
-│   └── pre-commit            # Auto-syncs README when plugin READMEs change
+│   ├── pre-commit            # Auto-syncs README when plugin READMEs change
+│   └── post-commit           # Auto-pushes to remote after commit
 ├── plugins/
 │   └── <plugin-name>/
 │       ├── .claude-plugin/
