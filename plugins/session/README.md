@@ -1,12 +1,12 @@
 # Session Plugin
 
-Intelligently restart, fork, or delegate your Claude Code sessions with beautiful UI feedback.
+Delegate tasks to new Claude sessions when subagents aren't enough.
 
 <!-- VISUAL -->
 ![Demo: typing /session:restart shows green SESSION RESUMED banner, /session:fork shows orange SESSION FORKED banner](assets/demo.gif)
 <!-- /VISUAL -->
 
-**Requirements**: macOS · `jq` · iTerm2 or Terminal.app
+**Requirements**: macOS, `jq`, iTerm2 or Terminal.app
 
 ## Add Marketplace
 
@@ -20,69 +20,67 @@ Intelligently restart, fork, or delegate your Claude Code sessions with beautifu
 /plugin install session@nqh-plugins
 ```
 
+## When Subagents Aren't Enough
+
+The Task tool has limits:
+
+| You need... | But subagents can't... |
+|-------------|------------------------|
+| Large refactor | Handle big context - hit limits mid-task |
+| Clarifying questions | Interact with user - run without input |
+| Nested delegation | Spawn subagents - single level only |
+
+When you hit these, use fork or spawn instead.
+
 ## Commands
 
-| Command | What it does |
-|---------|--------------|
-| `/session:restart` | Resume session in new terminal tab |
-| `/session:fork [prompt]` | Branch off with context (needs our discussion) |
-| `/session:spawn [prompt]` | Delegate to new agent (no context needed) |
+| Command | Purpose |
+|---------|---------|
+| `/session:fork [task]` | New terminal WITH conversation context |
+| `/session:spawn [task]` | New terminal FRESH, no history |
+| `/session:restart` | Continue same session in new terminal |
 | `/session:id` | Show current session ID |
 | `/session:configure` | Setup preferences |
 
-### `/session:fork` vs `/session:spawn`
+### Fork vs Spawn
 
-| Command | Context | Use case |
+| Command | Context | Use when |
 |---------|---------|----------|
-| `fork` | Inherits conversation | Task needs what we discussed |
-| `spawn` | Fresh start | Delegate unrelated task to new agent |
+| `fork` | Inherits conversation | Task relates to what we discussed |
+| `spawn` | Clean slate | Task is independent |
 
-Both support smart prompt handling - Claude reads your message, considers context, and refines:
+Both create full sessions that can interact with user and spawn their own subagents.
 
-| Input | Result |
-|-------|--------|
-| `/session:fork` | Interactive - asks what to work on |
-| `/session:fork fix the bug` | Understands, refines, executes |
+## Decision Tree
+
+```
+About to use Task tool?
+│
+├── Small, focused, no user input needed?
+│   └── Subagent is fine
+│
+└── Big / needs user input / needs nested subagents?
+    ├── Related to conversation? → /session:fork
+    └── Independent task?        → /session:spawn
+```
 
 ## Skills
 
-| Skill | When it activates |
-|-------|-------------------|
-| `delegating` | When deciding between subagent vs fork/spawn |
-| `restarting-sessions` | When Claude Code needs config reload |
+**`delegating`** - Activates when considering Task tool. Helps decide if fork/spawn is better, asks with options based on conversation context.
 
-### Why Fork/Spawn Instead of Subagent?
+**`restarting-sessions`** - Activates after config changes (new hooks, agents, skills) that need reload.
 
-Use fork/spawn (not Task tool) when:
-- **Task is too big** - would exceed subagent context limits
-- **Task needs user interaction** - subagents can't ask questions
-- **Task needs to nest subagents** - subagents can't spawn subagents
+## Config
 
-## How It Works
+Saved to `.claude/.session-plugin-config.json` (project) or `~/.claude/.session-plugin-config.json` (user).
 
-```
-SessionStart hook → captures session_id → temp file
-                                              ↓
-/session:restart  ────────────────────→ reads temp file → opens new tab (resume)
-/session:fork     ────────────────────→ reads temp file → opens new tab (forked)
-/session:spawn    ────────────────────→ uses config only → opens new tab (fresh)
-/session:id       ────────────────────→ reads temp file → shows ID
-```
-
-## Configuration
-
-Preferences saved to:
-- **Project**: `.claude/.session-plugin-config.json` (higher priority)
-- **User**: `~/.claude/.session-plugin-config.json` (fallback)
-
-| Setting | Values | Description |
-|---------|--------|-------------|
-| `auto_execute` | `true`/`false` | Open new tab automatically |
-| `clipboard` | `true`/`false` | Copy command to clipboard |
-| `terminal` | `auto`/`iterm`/`terminal` | Terminal app |
-| `model` | `""`/`opus`/`sonnet` | Model override |
-| `flags` | string | Extra flags (e.g., `--dangerously-skip-permissions`) |
+| Setting | Values | Default |
+|---------|--------|---------|
+| `terminal` | `auto`/`iterm`/`terminal` | `auto` |
+| `auto_execute` | `true`/`false` | `true` |
+| `model` | `""`/`opus`/`sonnet` | inherit |
+| `flags` | string | `""` |
 
 ---
 
-**v3.2.0** · Added skills: `delegating`, `restarting-sessions`
+**v3.2.0** · Added delegation skills, SessionStart hook for skill intro
