@@ -25,7 +25,7 @@ nqh-claude-plugins/
 ├── .claude-plugin/
 │   └── marketplace.json      # Registry of all plugins
 ├── .husky/
-│   └── pre-push              # Blocks push if README outdated
+│   └── pre-commit            # Auto-syncs README when plugin READMEs change
 ├── plugins/
 │   └── <plugin-name>/
 │       ├── .claude-plugin/
@@ -60,14 +60,15 @@ nqh-claude-plugins/
    - One-liner description (first line after `# Title`)
    - Visual banner (first code block)
 
-4. Push triggers `build:readme` automatically via pre-push hook
+4. Commit triggers `build:readme` automatically via pre-commit hook
 
 ## README Auto-Generation
 
 The root README is generated from plugin READMEs:
 - Extracts one-liner (first non-empty line after title)
+- Extracts install command (`/plugin install {name}@nqh-plugins`)
 - Extracts visual (first code block)
-- Pre-push hook blocks if README is outdated
+- Pre-commit hook auto-stages README.md when plugin READMEs change
 
 ## Command Format
 

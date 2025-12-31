@@ -2,12 +2,10 @@
 
 A catalog of Claude Code plugins for workflow automation.
 
-## Installation
+## Add Marketplace
 
 ```
-/plugin marketplace add /path/to/nqh-claude-plugins
-/plugin list
-/plugin install <name>@nqh-plugins
+/plugin marketplace add nqh-packages/nqh-claude-plugins
 ```
 
 ---
@@ -19,6 +17,10 @@ A catalog of Claude Code plugins for workflow automation.
 ### [session](./plugins/session/)
 
 Restart or fork your Claude Code session with beautiful UI feedback.
+
+```
+/plugin install session@nqh-plugins
+```
 
 ```
     ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓      ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓

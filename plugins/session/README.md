@@ -13,7 +13,7 @@ Restart or fork your Claude Code session with beautiful UI feedback.
 ## Installation
 
 ```
-/plugin marketplace add /path/to/nqh-claude-plugins
+/plugin marketplace add nqh-packages/nqh-claude-plugins
 /plugin install session@nqh-plugins
 ```
 

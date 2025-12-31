@@ -1,0 +1,14 @@
+#!/bin/bash
+# Pre-commit hook: auto-sync README.md with plugin READMEs
+
+# Check if any plugin README was modified
+if git diff --cached --name-only | grep -q "plugins/.*/README.md"; then
+  echo "Plugin README changed, syncing to root README..."
+  bun run build:readme 2>/dev/null
+
+  # Auto-stage the updated README
+  git add README.md
+  echo "✓ README.md synced and staged"
+fi
+
+exit 0

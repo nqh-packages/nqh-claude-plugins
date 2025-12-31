@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * @what Generates root README.md from plugin READMEs
- * @why Auto-imports one-liner + visual from each plugin
+ * @why Auto-imports one-liner + install + visual from each plugin
  */
 
 import { readFileSync, writeFileSync, readdirSync } from 'fs';
@@ -36,7 +36,10 @@ function extractPluginContent(pluginName) {
   const codeBlockMatch = content.match(/```[\s\S]*?```/);
   const visual = codeBlockMatch ? codeBlockMatch[0] : '';
 
-  return { name: pluginName, oneLiner, visual };
+  // Install command
+  const installCmd = `/plugin install ${pluginName}@nqh-plugins`;
+
+  return { name: pluginName, oneLiner, visual, installCmd };
 }
 
 function buildPluginsSection() {
@@ -47,6 +50,10 @@ function buildPluginsSection() {
   return plugins.map(p => `### [${p.name}](./plugins/${p.name}/)
 
 ${p.oneLiner}
+
+\`\`\`
+${p.installCmd}
+\`\`\`
 
 ${p.visual}`).join('\n\n');
 }
