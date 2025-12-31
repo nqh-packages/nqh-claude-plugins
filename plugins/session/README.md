@@ -1,6 +1,6 @@
 # Session Plugin
 
-Delegate tasks to new Claude sessions when subagents aren't enough.
+Intelligently restart, fork, or delegate your Claude Code sessions with beautiful UI feedback.
 
 <!-- VISUAL -->
 ![Demo: typing /session:restart shows green SESSION RESUMED banner, /session:fork shows orange SESSION FORKED banner](assets/demo.gif)
