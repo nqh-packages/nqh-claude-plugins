@@ -7,10 +7,22 @@ if [ -d ".git/rebase-merge" ] || [ -d ".git/rebase-apply" ]; then
 fi
 
 echo "Syncing with remote..."
-git pull --rebase --autostash 2>/dev/null && git push 2>/dev/null
+
+# Stash if needed
+stashed=false
+if ! git diff --quiet 2>/dev/null; then
+  git stash push -q && stashed=true
+fi
+
+git pull --rebase 2>/dev/null && git push 2>/dev/null
 
 if [ $? -eq 0 ]; then
   echo "✓ Synced with remote"
 else
   echo "⚠ Sync failed (no remote or offline)"
+fi
+
+# Pop stash if we stashed
+if [ "$stashed" = true ]; then
+  git stash pop -q 2>/dev/null
 fi
