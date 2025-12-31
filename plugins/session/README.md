@@ -4,6 +4,8 @@ Restart or fork your Claude Code session with beautiful UI feedback.
 
 <!-- VISUAL -->
 ![Session Plugin Demo](assets/demo.gif)
+
+<sub>Safari: right-click → Play Animation</sub>
 <!-- /VISUAL -->
 
 **Requirements**: macOS · `jq` · iTerm2 or Terminal.app
