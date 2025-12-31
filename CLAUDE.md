@@ -74,7 +74,13 @@ One-liner description (extracted to root README).
 
 **Requirements**: dependencies...
 
-## Installation
+## Add Marketplace
+
+\`\`\`
+/plugin marketplace add nqh-packages/nqh-claude-plugins
+\`\`\`
+
+## Add Plugin
 
 \`\`\`
 /plugin install plugin-name@nqh-plugins
@@ -94,7 +100,8 @@ One-liner description (extracted to root README).
 | One-liner | First line after title | Yes |
 | `<!-- VISUAL -->` | Image, GIF, or code block | Yes (path adjusted) |
 | Requirements | Dependencies | No |
-| Installation | Install command only (no marketplace) | Yes |
+| Add Marketplace | Marketplace command | No (root has it) |
+| Add Plugin | Install command | Yes |
 | Commands/docs | Usage details | No |
 | Version | Bottom of file | No |
 

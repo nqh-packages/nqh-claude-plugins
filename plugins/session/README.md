@@ -8,7 +8,13 @@ Restart or fork your Claude Code session with beautiful UI feedback.
 
 **Requirements**: macOS · `jq` · iTerm2 or Terminal.app
 
-## Installation
+## Add Marketplace
+
+```
+/plugin marketplace add nqh-packages/nqh-claude-plugins
+```
+
+## Add Plugin
 
 ```
 /plugin install session@nqh-plugins
