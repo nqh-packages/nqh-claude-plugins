@@ -83,4 +83,4 @@ Saved to `.claude/.session-plugin-config.json` (project) or `~/.claude/.session-
 
 ---
 
-**v3.2.0** · Added delegation skills, SessionStart hook for skill intro
+**v3.3.0** · PreToolUse hook nudges skill loading before Task tool

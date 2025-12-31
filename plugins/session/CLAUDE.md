@@ -10,8 +10,9 @@ Session management plugin for Claude Code. Enables `/session:restart`, `/session
 session/
 ├── .claude-plugin/plugin.json    # Plugin manifest (declares hooks)
 ├── hooks/
-│   ├── hooks.json                # SessionStart hook declaration
-│   └── session-capture.sh        # Captures session_id on session start
+│   ├── hooks.json                # SessionStart + PreToolUse hooks
+│   ├── session-capture.sh        # Captures session_id on session start
+│   └── skills-intro.sh           # Introduces skills to Claude
 ├── commands/
 │   ├── restart.md                # /session:restart
 │   ├── fork.md                   # /session:fork (asks for new task)
@@ -53,6 +54,13 @@ Opens new terminal tab with `claude --resume <id>`
 | `execute_restart` | Open new tab and run command |
 | `execute_fork` | Open new tab with --fork-session |
 | `execute_spawn` | Open new tab with fresh context |
+
+## Hooks
+
+| Event | Purpose |
+|-------|---------|
+| `SessionStart` | Captures session_id, introduces skills |
+| `PreToolUse (Task)` | Nudges Claude to consider `session:delegating` skill |
 
 ## Skills
 
