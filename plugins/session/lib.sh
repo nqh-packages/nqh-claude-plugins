@@ -108,6 +108,20 @@ get_session_info() {
   export SESSION_ID PROJECT_DIR
 }
 
+show_session_id() {
+  local C="\033[38;5;75m"   # Color (blue)
+  local R="\033[0m"          # Reset
+  local id_line="🔑  $SESSION_ID"
+  echo ""
+  echo ""
+  echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
+  echo -e "    ${C}▓${R}  $(pad_left "$id_line")  ${C}▓${R}"
+  echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
+  [[ "$USE_CLIPBOARD" == "true" ]] && copy_to_clipboard "$SESSION_ID"
+  echo ""
+  echo ""
+}
+
 build_command() {
   local mode="${1:-restart}"
   local SAFE_DIR=$(printf '%q' "$PROJECT_DIR")
@@ -269,5 +283,61 @@ execute_fork() {
     show_error "Could not open new tab. Falling back to manual mode."
     [[ -n "$prompt" ]] && CMD="$fork_cmd"
     output_command fork
+  fi
+}
+
+build_spawn_command() {
+  local SAFE_DIR=$(printf '%q' "$(pwd)")
+  local FLAGS=""
+  [[ -n "$CLAUDE_FLAGS" ]] && FLAGS="$CLAUDE_FLAGS "
+  [[ -n "$MODEL" ]] && FLAGS="${FLAGS}--model $MODEL "
+
+  CMD="cd $SAFE_DIR && claude ${FLAGS}"
+  # Trim trailing space
+  CMD="${CMD% }"
+  export CMD
+}
+
+execute_spawn() {
+  local prompt="${1:-}"
+
+  if [[ "$AUTO_EXECUTE" != "true" ]]; then
+    output_command spawn
+    return
+  fi
+
+  local spawn_cmd="$CMD"
+  if [[ -n "$prompt" ]]; then
+    local escaped
+    escaped=$(printf '%s' "$prompt" | sed "s/'/'\\\\''/g")
+    spawn_cmd="$spawn_cmd '$escaped'"
+  fi
+
+  if open_tab_and_run "$spawn_cmd"; then
+    local C="\033[38;5;141m"  # Color (purple)
+    local R="\033[0m"          # Reset
+    local B="\033[1;38;5;141m" # Bold
+    local D="\033[38;5;245m"   # Dim
+    local title="✦  SESSION SPAWNED"
+    local centered_title=$(center_text "$title")
+    echo ""
+    echo ""
+    echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
+    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
+    echo -e "    ${C}▓${R}  ${B}${centered_title}${R}  ${C}▓${R}"
+    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
+    echo -e "    ${C}▓${R}  $(pad_left "Fresh session opened in new tab")  ${C}▓${R}"
+    if [[ -n "$prompt" ]]; then
+      local prompt_line="Prompt: $(truncate "$prompt" 33)"
+      echo -e "    ${C}▓${R}  ${D}$(pad_left "$prompt_line")${R}  ${C}▓${R}"
+    fi
+    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
+    echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
+    echo ""
+    echo ""
+  else
+    show_error "Could not open new tab. Falling back to manual mode."
+    [[ -n "$prompt" ]] && CMD="$spawn_cmd"
+    output_command spawn
   fi
 }

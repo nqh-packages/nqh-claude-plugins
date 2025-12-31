@@ -10,8 +10,8 @@
     {
       "name": "session",
       "source": "./plugins/session",
-      "description": "Restart or fork Claude sessions - no arguments needed",
-      "version": "3.0.3"
+      "description": "Restart, fork, or delegate Claude sessions - no arguments needed",
+      "version": "3.1.0"
     }
   ]
 }

@@ -1,6 +1,6 @@
 # Session Plugin
 
-Commands to restart or fork your Claude Code session automatically with beautiful UI feedback.
+Intelligently restart, fork, or delegate your Claude Code sessions with beautiful UI feedback.
 
 <!-- VISUAL -->
 ![Demo: typing /session:restart shows green SESSION RESUMED banner, /session:fork shows orange SESSION FORKED banner](assets/demo.gif)
@@ -25,12 +25,19 @@ Commands to restart or fork your Claude Code session automatically with beautifu
 | Command | What it does |
 |---------|--------------|
 | `/session:restart` | Resume session in new terminal tab |
-| `/session:fork [prompt]` | Fork session with new task |
+| `/session:fork [prompt]` | Branch off with context (needs our discussion) |
+| `/session:spawn [prompt]` | Delegate to new agent (no context needed) |
+| `/session:id` | Show current session ID |
 | `/session:configure` | Setup preferences |
 
-### `/session:fork`
+### `/session:fork` vs `/session:spawn`
 
-Smart prompt handling - Claude reads your message, considers context, and refines:
+| Command | Context | Use case |
+|---------|---------|----------|
+| `fork` | Inherits conversation | Task needs what we discussed |
+| `spawn` | Fresh start | Delegate unrelated task to new agent |
+
+Both support smart prompt handling - Claude reads your message, considers context, and refines:
 
 | Input | Result |
 |-------|--------|
@@ -42,8 +49,10 @@ Smart prompt handling - Claude reads your message, considers context, and refine
 ```
 SessionStart hook → captures session_id → temp file
                                               ↓
-/session:restart  ────────────────────→ reads temp file → opens new tab
+/session:restart  ────────────────────→ reads temp file → opens new tab (resume)
 /session:fork     ────────────────────→ reads temp file → opens new tab (forked)
+/session:spawn    ────────────────────→ uses config only → opens new tab (fresh)
+/session:id       ────────────────────→ reads temp file → shows ID
 ```
 
 ## Configuration
@@ -62,4 +71,4 @@ Preferences saved to:
 
 ---
 
-**v3.0.3** · Fixed banners · Smart fork prompts · User/project config
+**v3.1.0** · Added `/session:spawn` (fresh context) · Added `/session:id`

@@ -1,11 +1,11 @@
 ---
-description: Fork session to new terminal with a new task
+description: Fork session with context to new terminal
 allowed-tools: Bash, AskUserQuestion
 ---
 
 # Fork Session
 
-Fork this session to work on a parallel task. The forked session shares context but starts fresh.
+Branch off this session to work on a related task. The forked agent inherits our full conversation context - use this when the task needs what we've discussed.
 
 ## Step 1: Understand the fork request
 
@@ -22,9 +22,9 @@ Read the user's message (argument or conversation context). DO NOT just pass it 
 Question: "What do you want to work on in the forked session?"
 Header: "Fork task"
 Options:
-- "Bug fix" / "Fix a bug while keeping current work"
-- "Experiment" / "Try an alternative approach"
-- "Parallel task" / "Work on something else in parallel"
+- "Related task" / "Branch off to handle something from our discussion"
+- "Alternative approach" / "Try a different solution to what we're working on"
+- "Bug fix" / "Fix an issue we identified together"
 - "Other" / "I'll type my own prompt"
 ```
 

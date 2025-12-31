@@ -16,7 +16,7 @@ A catalog of Claude Code plugins for workflow automation.
 
 ### [session](./plugins/session/)
 
-Commands to restart or fork your Claude Code session automatically with beautiful UI feedback.
+Intelligently restart, fork, or delegate your Claude Code sessions with beautiful UI feedback.
 
 ```
 /plugin install session@nqh-plugins

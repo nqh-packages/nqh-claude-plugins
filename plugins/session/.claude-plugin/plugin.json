@@ -1,11 +1,11 @@
 {
   "name": "session",
-  "version": "3.0.3",
-  "description": "Restart or fork Claude sessions - no arguments needed",
+  "version": "3.1.0",
+  "description": "Restart, fork, or delegate Claude sessions - no arguments needed",
   "author": {
     "name": "nqh-packages",
     "email": "dev@ngoquochuy.com"
   },
-  "keywords": ["session", "restart", "fork", "resume", "workflow"],
+  "keywords": ["session", "restart", "fork", "spawn", "resume", "workflow"],
   "hooks": "./hooks/hooks.json"
 }
