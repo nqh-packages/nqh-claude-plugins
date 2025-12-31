@@ -32,9 +32,24 @@ function extractPluginContent(pluginName) {
     }
   }
 
-  // Extract first code block (visual banner)
-  const codeBlockMatch = content.match(/```[\s\S]*?```/);
-  const visual = codeBlockMatch ? codeBlockMatch[0] : '';
+  // Extract visual from <!-- VISUAL --> markers
+  const visualMatch = content.match(/<!-- VISUAL -->\n([\s\S]*?)\n<!-- \/VISUAL -->/);
+
+  let visual = '';
+  if (visualMatch) {
+    const visualContent = visualMatch[1].trim();
+
+    // If it's an image, convert relative path to absolute for root README
+    const imageMatch = visualContent.match(/!\[([^\]]*)\]\(([^)]+)\)/);
+    if (imageMatch) {
+      const imgPath = imageMatch[2];
+      const absolutePath = imgPath.startsWith('http') ? imgPath : `./plugins/${pluginName}/${imgPath}`;
+      visual = `![${imageMatch[1]}](${absolutePath})`;
+    } else {
+      // Code block or other content - use as-is
+      visual = visualContent;
+    }
+  }
 
   // Install command
   const installCmd = `/plugin install ${pluginName}@nqh-plugins`;

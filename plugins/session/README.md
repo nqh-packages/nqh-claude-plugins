@@ -2,14 +2,15 @@
 
 Restart or fork your Claude Code session with beautiful UI feedback.
 
+<!-- VISUAL -->
 ![Session Plugin Demo](assets/demo.gif)
+<!-- /VISUAL -->
 
 **Requirements**: macOS · `jq` · iTerm2 or Terminal.app
 
 ## Installation
 
 ```
-/plugin marketplace add nqh-packages/nqh-claude-plugins
 /plugin install session@nqh-plugins
 ```
 

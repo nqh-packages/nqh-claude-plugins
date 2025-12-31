@@ -22,10 +22,7 @@ Restart or fork your Claude Code session with beautiful UI feedback.
 /plugin install session@nqh-plugins
 ```
 
-```
-/plugin marketplace add nqh-packages/nqh-claude-plugins
-/plugin install session@nqh-plugins
-```
+![Session Plugin Demo](./plugins/session/assets/demo.gif)
 
 <!-- END AUTO-GENERATED -->
 
