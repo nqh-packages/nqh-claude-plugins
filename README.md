@@ -16,7 +16,7 @@ A catalog of Claude Code plugins for workflow automation.
 
 ### [session](./plugins/session/)
 
-Delegate tasks to new Claude sessions when subagents aren't enough.
+Intelligently restart, fork, or delegate your Claude Code sessions with beautiful UI feedback.
 
 ```
 /plugin install session@nqh-plugins

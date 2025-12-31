@@ -10,7 +10,7 @@
     {
       "name": "session",
       "source": "./plugins/session",
-      "description": "Restart, fork, or delegate Claude sessions - no arguments needed",
+      "description": "Intelligently restart, fork, or delegate your Claude Code sessions with beautiful UI feedback",
       "version": "3.3.0"
     }
   ]
