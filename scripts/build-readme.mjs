@@ -37,18 +37,18 @@ function extractPluginContent(pluginName) {
 
   let visual = '';
   if (visualMatch) {
-    const visualContent = visualMatch[1].trim();
+    let visualContent = visualMatch[1].trim();
 
-    // If it's an image, convert relative path to absolute for root README
-    const imageMatch = visualContent.match(/!\[([^\]]*)\]\(([^)]+)\)/);
-    if (imageMatch) {
-      const imgPath = imageMatch[2];
-      const absolutePath = imgPath.startsWith('http') ? imgPath : `./plugins/${pluginName}/${imgPath}`;
-      visual = `![${imageMatch[1]}](${absolutePath})`;
-    } else {
-      // Code block or other content - use as-is
-      visual = visualContent;
-    }
+    // Convert relative image paths to absolute for root README
+    visualContent = visualContent.replace(
+      /!\[([^\]]*)\]\(([^)]+)\)/g,
+      (match, alt, imgPath) => {
+        const absolutePath = imgPath.startsWith('http') ? imgPath : `./plugins/${pluginName}/${imgPath}`;
+        return `![${alt}](${absolutePath})`;
+      }
+    );
+
+    visual = visualContent;
   }
 
   // Install command

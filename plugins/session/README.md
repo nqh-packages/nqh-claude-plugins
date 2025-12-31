@@ -1,6 +1,6 @@
 # Session Plugin
 
-Restart or fork your Claude Code session with beautiful UI feedback.
+Commands to restart or fork your Claude Code session automatically with beautiful UI feedback.
 
 <!-- VISUAL -->
 ![Demo: typing /session:restart shows green SESSION RESUMED banner, /session:fork shows orange SESSION FORKED banner](assets/demo.gif)

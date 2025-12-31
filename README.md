@@ -16,13 +16,15 @@ A catalog of Claude Code plugins for workflow automation.
 
 ### [session](./plugins/session/)
 
-Restart or fork your Claude Code session with beautiful UI feedback.
+Commands to restart or fork your Claude Code session automatically with beautiful UI feedback.
 
 ```
 /plugin install session@nqh-plugins
 ```
 
 ![Demo: typing /session:restart shows green SESSION RESUMED banner, /session:fork shows orange SESSION FORKED banner](./plugins/session/assets/demo.gif)
+
+<sub>Safari: right-click → Play Animation</sub>
 
 <!-- END AUTO-GENERATED -->
 
