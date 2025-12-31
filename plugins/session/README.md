@@ -44,6 +44,20 @@ Both support smart prompt handling - Claude reads your message, considers contex
 | `/session:fork` | Interactive - asks what to work on |
 | `/session:fork fix the bug` | Understands, refines, executes |
 
+## Skills
+
+| Skill | When it activates |
+|-------|-------------------|
+| `delegating` | When deciding between subagent vs fork/spawn |
+| `restarting-sessions` | When Claude Code needs config reload |
+
+### Why Fork/Spawn Instead of Subagent?
+
+Use fork/spawn (not Task tool) when:
+- **Task is too big** - would exceed subagent context limits
+- **Task needs user interaction** - subagents can't ask questions
+- **Task needs to nest subagents** - subagents can't spawn subagents
+
 ## How It Works
 
 ```
@@ -71,4 +85,4 @@ Preferences saved to:
 
 ---
 
-**v3.1.0** · Added `/session:spawn` (fresh context) · Added `/session:id`
+**v3.2.0** · Added skills: `delegating`, `restarting-sessions`

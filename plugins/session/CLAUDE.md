@@ -2,7 +2,7 @@
 
 ## Overview
 
-Session management plugin for Claude Code. Enables `/session:restart` and `/session:fork` commands that work without any arguments.
+Session management plugin for Claude Code. Enables `/session:restart`, `/session:fork`, and `/session:spawn` commands with intelligent skills for delegation decisions.
 
 ## Architecture
 
@@ -15,7 +15,11 @@ session/
 ├── commands/
 │   ├── restart.md                # /session:restart
 │   ├── fork.md                   # /session:fork (asks for new task)
+│   ├── spawn.md                  # /session:spawn (fresh context)
 │   └── configure.md              # /session:configure
+├── skills/
+│   ├── delegating/SKILL.md       # When to fork/spawn vs subagent
+│   └── restarting-sessions/SKILL.md  # When Claude Code needs reload
 ├── lib.sh                        # Shared bash functions
 ├── config.json                   # User configuration
 └── README.md
@@ -48,6 +52,18 @@ Opens new terminal tab with `claude --resume <id>`
 | `build_command` | Build `claude --resume` command |
 | `execute_restart` | Open new tab and run command |
 | `execute_fork` | Open new tab with --fork-session |
+| `execute_spawn` | Open new tab with fresh context |
+
+## Skills
+
+### `delegating`
+Activates when Claude considers using Task tool for delegation. Helps decide if fork/spawn is better than subagent when:
+- Task is too big for subagent context
+- Task needs user interaction
+- Task needs to nest subagents
+
+### `restarting-sessions`
+Activates after config changes (new hook, agent, skill, plugin) that require Claude Code reload.
 
 ## Portability
 

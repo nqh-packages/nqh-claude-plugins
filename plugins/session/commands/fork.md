@@ -5,7 +5,16 @@ allowed-tools: Bash, AskUserQuestion
 
 # Fork Session
 
-Branch off this session to work on a related task. The forked agent inherits our full conversation context - use this when the task needs what we've discussed.
+Branch off this session to a new terminal that inherits our full conversation context.
+
+## Why Fork Instead of Subagent?
+
+Use fork (not Task tool subagent) when:
+- **Task is too big** - would exceed subagent context limits
+- **Task needs user interaction** - subagents can't ask the user questions
+- **Task needs to nest subagents** - subagents can't spawn other subagents
+
+Use fork (not spawn) when the task needs what we've discussed.
 
 ## Step 1: Understand the fork request
 

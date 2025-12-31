@@ -5,7 +5,16 @@ allowed-tools: Bash, AskUserQuestion
 
 # Spawn Session
 
-Delegate a task to a new Claude agent with fresh context. Use this when the task doesn't need our conversation history - unlike fork which carries context forward.
+Delegate a task to a new Claude agent in a separate terminal with fresh context.
+
+## Why Spawn Instead of Subagent?
+
+Use spawn (not Task tool subagent) when:
+- **Task is too big** - would exceed subagent context limits
+- **Task needs user interaction** - subagents can't ask the user questions
+- **Task needs to nest subagents** - subagents can't spawn other subagents
+
+Use spawn (not fork) when the task doesn't need our conversation history.
 
 ## Step 1: Understand the spawn request
 

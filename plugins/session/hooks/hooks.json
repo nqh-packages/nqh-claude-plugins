@@ -1,5 +1,5 @@
 {
-  "description": "Captures session ID on session start for /session:restart and /session:fork",
+  "description": "Session plugin hooks: captures session ID and introduces skills",
   "hooks": {
     "SessionStart": [
       {
@@ -7,6 +7,11 @@
           {
             "type": "command",
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/session-capture.sh",
+            "timeout": 500
+          },
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/skills-intro.sh",
             "timeout": 500
           }
         ]
