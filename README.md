@@ -1,32 +1,33 @@
 # NQH Claude Plugins
 
-A marketplace of Claude Code plugins.
+A catalog of Claude Code plugins for workflow automation.
 
 ## Installation
 
-```bash
-# Add this marketplace
-claude /plugin marketplace add /path/to/nqh-claude-plugins
-
-# List available plugins
-claude /plugin list
-
-# Install a plugin
-claude /plugin install <plugin-name>@nqh-plugins
+```
+/plugin marketplace add /path/to/nqh-claude-plugins
+/plugin list
+/plugin install <name>@nqh-plugins
 ```
 
-## Available Plugins
+---
 
-| Plugin | Description | Version |
-|--------|-------------|---------|
-| [session](./plugins/session/) | Restart or fork Claude sessions | 3.0.0 |
+## Plugins
 
-## Plugin Development
+<!-- AUTO-GENERATED: run `bun run build:readme` to update -->
 
-To add a new plugin:
+### [session](./plugins/session/)
 
-1. Create directory: `plugins/<plugin-name>/`
-2. Add manifest: `plugins/<plugin-name>/.claude-plugin/plugin.json`
-3. Register in `.claude-plugin/marketplace.json`
+Restart or fork your Claude Code session with beautiful UI feedback.
 
-See [plugin-dev docs](https://code.claude.com/docs/en/plugins-reference.md) for details.
+```
+    ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓      ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+    ▓              ✓  SESSION RESUMED              ▓      ▓              ⑂  SESSION FORKED               ▓
+    ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓      ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+```
+
+<!-- END AUTO-GENERATED -->
+
+---
+
+See [CLAUDE.md](./CLAUDE.md) for plugin development.

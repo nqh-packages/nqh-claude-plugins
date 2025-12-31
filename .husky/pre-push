@@ -1,0 +1,22 @@
+#!/bin/bash
+# Pre-push hook: ensure README.md is up-to-date with plugins
+
+echo "Checking README.md is up-to-date..."
+
+# Run build
+bun run build:readme 2>/dev/null
+
+# Check if README changed
+if ! git diff --quiet README.md; then
+  echo ""
+  echo "❌ README.md is out of sync with plugins!"
+  echo ""
+  echo "Run:"
+  echo "  git add README.md && git commit --amend --no-edit"
+  echo ""
+  echo "Then push again."
+  exit 1
+fi
+
+echo "✓ README.md is up-to-date"
+exit 0

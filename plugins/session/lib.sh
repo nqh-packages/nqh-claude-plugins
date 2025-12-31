@@ -2,6 +2,39 @@
 # @what Session plugin shared library
 # @why DRY - avoid duplicating logic across commands
 
+# Banner constants
+BANNER_WIDTH=48
+CONTENT_WIDTH=42  # Width between borders (48 - 2 borders - 4 padding)
+
+# Pad text to fixed width (left-aligned)
+pad_left() {
+  local text="$1"
+  local width="${2:-$CONTENT_WIDTH}"
+  printf "%-${width}s" "$text"
+}
+
+# Center text within width
+center_text() {
+  local text="$1"
+  local width="${2:-$CONTENT_WIDTH}"
+  local text_len=${#text}
+  local pad_total=$((width - text_len))
+  local pad_left=$((pad_total / 2))
+  local pad_right=$((pad_total - pad_left))
+  printf "%*s%s%*s" "$pad_left" "" "$text" "$pad_right" ""
+}
+
+# Truncate text with ellipsis if too long
+truncate() {
+  local text="$1"
+  local max="${2:-$CONTENT_WIDTH}"
+  if [[ ${#text} -gt $max ]]; then
+    echo "${text:0:$((max-3))}..."
+  else
+    echo "$text"
+  fi
+}
+
 # Config locations: project-first fallback to user
 CONFIG_FILE=""
 
@@ -16,15 +49,21 @@ ensure_config() {
     CONFIG_FILE="$user_cfg"
   else
     # No config found - show setup message
+    local C="\033[38;5;209m"  # Color (orange)
+    local R="\033[0m"          # Reset
+    local B="\033[1;38;5;209m" # Bold
+    local W="\033[1;37m"       # White bold
+    local title="⚙  SETUP REQUIRED"
+    local centered_title=$(center_text "$title")
     echo ""
     echo ""
-    echo -e "    \033[38;5;209m▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓\033[0m"
-    echo -e "    \033[38;5;209m▓\033[0m                                              \033[38;5;209m▓\033[0m"
-    echo -e "    \033[38;5;209m▓\033[0m    \033[1;38;5;209m⚙  SETUP REQUIRED\033[0m                         \033[38;5;209m▓\033[0m"
-    echo -e "    \033[38;5;209m▓\033[0m                                              \033[38;5;209m▓\033[0m"
-    echo -e "    \033[38;5;209m▓\033[0m    \033[38;5;250mRun\033[0m \033[1;37m/session:configure\033[0m \033[38;5;250mto get started\033[0m    \033[38;5;209m▓\033[0m"
-    echo -e "    \033[38;5;209m▓\033[0m                                              \033[38;5;209m▓\033[0m"
-    echo -e "    \033[38;5;209m▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓\033[0m"
+    echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
+    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
+    echo -e "    ${C}▓${R}  ${B}${centered_title}${R}  ${C}▓${R}"
+    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
+    echo -e "    ${C}▓${R}  $(pad_left "Run /session:configure to get started")  ${C}▓${R}"
+    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
+    echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
     echo ""
     echo ""
     return 1
@@ -164,18 +203,23 @@ execute_restart() {
   fi
 
   if open_tab_and_run "$CMD"; then
+    local C="\033[38;5;107m"  # Color
+    local R="\033[0m"          # Reset
+    local B="\033[1;38;5;107m" # Bold
+    local title="✓  SESSION RESUMED"
+    local centered_title=$(center_text "$title")
     echo ""
     echo ""
-    echo -e "    \033[38;5;107m▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓\033[0m"
-    echo -e "    \033[38;5;107m▓\033[0m                                              \033[38;5;107m▓\033[0m"
-    echo -e "    \033[38;5;107m▓\033[0m    \033[1;38;5;107m✓  SESSION RESUMED\033[0m                        \033[38;5;107m▓\033[0m"
-    echo -e "    \033[38;5;107m▓\033[0m                                              \033[38;5;107m▓\033[0m"
-    echo -e "    \033[38;5;107m▓\033[0m    \033[38;5;250mContinuing in new tab\033[0m                     \033[38;5;107m▓\033[0m"
-    echo -e "    \033[38;5;107m▓\033[0m    \033[38;5;245mYou can safely close this one\033[0m             \033[38;5;107m▓\033[0m"
-    echo -e "    \033[38;5;107m▓\033[0m                                              \033[38;5;107m▓\033[0m"
-    echo -e "    \033[38;5;107m▓\033[0m    \033[38;5;240m⌘W  or  exit\033[0m                              \033[38;5;107m▓\033[0m"
-    echo -e "    \033[38;5;107m▓\033[0m                                              \033[38;5;107m▓\033[0m"
-    echo -e "    \033[38;5;107m▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓\033[0m"
+    echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
+    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
+    echo -e "    ${C}▓${R}  ${B}${centered_title}${R}  ${C}▓${R}"
+    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
+    echo -e "    ${C}▓${R}  $(pad_left "Continuing in new tab")  ${C}▓${R}"
+    echo -e "    ${C}▓${R}  $(pad_left "You can safely close this one" )  ${C}▓${R}"
+    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
+    echo -e "    ${C}▓${R}  $(pad_left "⌘W  or  exit")  ${C}▓${R}"
+    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
+    echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
     echo ""
     echo ""
   else
@@ -200,18 +244,25 @@ execute_fork() {
   fi
 
   if open_tab_and_run "$fork_cmd"; then
+    local C="\033[38;5;209m"  # Color (orange)
+    local R="\033[0m"          # Reset
+    local B="\033[1;38;5;209m" # Bold
+    local D="\033[38;5;245m"   # Dim
+    local title="⑂  SESSION FORKED"
+    local centered_title=$(center_text "$title")
     echo ""
     echo ""
-    echo -e "    \033[38;5;209m▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓\033[0m"
-    echo -e "    \033[38;5;209m▓\033[0m                                              \033[38;5;209m▓\033[0m"
-    echo -e "    \033[38;5;209m▓\033[0m    \033[1;38;5;209m⑂  SESSION FORKED\033[0m                         \033[38;5;209m▓\033[0m"
-    echo -e "    \033[38;5;209m▓\033[0m                                              \033[38;5;209m▓\033[0m"
-    echo -e "    \033[38;5;209m▓\033[0m    \033[38;5;250mNew branch opened in new tab\033[0m              \033[38;5;209m▓\033[0m"
+    echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
+    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
+    echo -e "    ${C}▓${R}  ${B}${centered_title}${R}  ${C}▓${R}"
+    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
+    echo -e "    ${C}▓${R}  $(pad_left "New branch opened in new tab")  ${C}▓${R}"
     if [[ -n "$prompt" ]]; then
-    echo -e "    \033[38;5;209m▓\033[0m    \033[38;5;245mPrompt: ${prompt:0:32}...\033[0m"
+      local prompt_line="Prompt: $(truncate "$prompt" 33)"
+      echo -e "    ${C}▓${R}  ${D}$(pad_left "$prompt_line")${R}  ${C}▓${R}"
     fi
-    echo -e "    \033[38;5;209m▓\033[0m                                              \033[38;5;209m▓\033[0m"
-    echo -e "    \033[38;5;209m▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓\033[0m"
+    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
+    echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
     echo ""
     echo ""
   else

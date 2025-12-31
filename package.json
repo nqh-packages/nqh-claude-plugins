@@ -1,0 +1,13 @@
+{
+  "name": "nqh-claude-plugins",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:readme": "node scripts/build-readme.mjs",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}

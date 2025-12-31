@@ -1,65 +1,62 @@
 # Session Plugin
 
-Restart or fork your current Claude session. No arguments needed.
+Restart or fork your Claude Code session with beautiful UI feedback.
+
+```
+    ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓      ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+    ▓              ✓  SESSION RESUMED              ▓      ▓              ⑂  SESSION FORKED               ▓
+    ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓      ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+```
+
+**Requirements**: macOS · `jq` · iTerm2 or Terminal.app
 
 ## Installation
 
-```bash
-# Add marketplace
-claude /plugin marketplace add /path/to/nqh-claude-plugins
-
-# Install plugin
-claude /plugin install session@nqh-plugins
+```
+/plugin marketplace add /path/to/nqh-claude-plugins
+/plugin install session@nqh-plugins
 ```
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `/session:restart` | Resume this session in new terminal tab |
-| `/session:fork` | Fork session to new terminal tab with new task |
-| `/session:configure` | Configure auto-execute, terminal, and flags |
+| Command | What it does |
+|---------|--------------|
+| `/session:restart` | Resume session in new terminal tab |
+| `/session:fork [prompt]` | Fork session with new task |
+| `/session:configure` | Setup preferences |
+
+### `/session:fork`
+
+Smart prompt handling - Claude reads your message, considers context, and refines:
+
+| Input | Result |
+|-------|--------|
+| `/session:fork` | Interactive - asks what to work on |
+| `/session:fork fix the bug` | Understands, refines, executes |
 
 ## How It Works
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                     Session Plugin                          │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  SessionStart Hook ───▶ Captures session_id to temp file   │
-│         │                                                   │
-│         ▼                                                   │
-│  /session:restart ───▶ Reads temp file ───▶ Opens new tab  │
-│  /session:fork    ───▶ Reads temp file ───▶ Opens new tab  │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
+SessionStart hook → captures session_id → temp file
+                                              ↓
+/session:restart  ────────────────────→ reads temp file → opens new tab
+/session:fork     ────────────────────→ reads temp file → opens new tab (forked)
 ```
-
-**Self-contained**: The plugin includes its own SessionStart hook. No external dependencies.
 
 ## Configuration
 
-Run `/session:configure` or edit `config.json`:
+Preferences saved to:
+- **Project**: `.claude/.session-plugin-config.json` (higher priority)
+- **User**: `~/.claude/.session-plugin-config.json` (fallback)
 
-| Setting | Default | Description |
-|---------|---------|-------------|
-| `auto_execute` | `true` | Open new tab automatically |
-| `clipboard` | `true` | Also copy command to clipboard |
-| `terminal` | `"auto"` | Terminal app (`auto`/`iterm`/`terminal`) |
-| `model` | `""` | Model override (empty = inherit) |
-| `flags` | `""` | Extra flags for `claude` command |
+| Setting | Values | Description |
+|---------|--------|-------------|
+| `auto_execute` | `true`/`false` | Open new tab automatically |
+| `clipboard` | `true`/`false` | Copy command to clipboard |
+| `terminal` | `auto`/`iterm`/`terminal` | Terminal app |
+| `model` | `""`/`opus`/`sonnet` | Model override |
+| `flags` | string | Extra flags (e.g., `--dangerously-skip-permissions`) |
 
-## Troubleshooting
+---
 
-| Issue | Solution |
-|-------|----------|
-| "No session captured" | Start a new session (hook runs on SessionStart) |
-| Auto-execute not working | Check `auto_execute: true` in config.json |
-| Wrong terminal opens | Set `terminal: "iterm"` or `terminal: "terminal"` |
-
-## Requirements
-
-- macOS (for AppleScript tab automation)
-- `jq` (for JSON parsing)
-- iTerm2 or Terminal.app
+**v3.0.3** · Fixed banners · Smart fork prompts · User/project config

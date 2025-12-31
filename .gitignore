@@ -1,3 +1,7 @@
+# Dependencies
+node_modules/
+bun.lockb
+
 # Local config overrides
 *.local.md
 *.local.json
