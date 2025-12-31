@@ -2,32 +2,147 @@
 # @what Session plugin shared library
 # @why DRY - avoid duplicating logic across commands
 
-# Banner constants
-BANNER_WIDTH=48
-CONTENT_WIDTH=42  # Width between borders (48 - 2 borders - 4 padding)
+# ═══════════════════════════════════════════════════════════════════════════════
+# FRAME RENDERING SYSTEM
+# Uses ANSI cursor positioning to guarantee visual alignment regardless of
+# Unicode character widths (emojis, CJK, etc.)
+# ═══════════════════════════════════════════════════════════════════════════════
 
-# Pad text to fixed width (left-aligned)
-pad_left() {
-  local text="$1"
-  local width="${2:-$CONTENT_WIDTH}"
-  printf "%-${width}s" "$text"
+# Layout constants
+declare -r FRAME_WIDTH=48
+declare -r FRAME_INDENT=4
+declare -r CONTENT_MAX=42           # Max content chars (48 - 2 borders - 4 padding)
+declare -r RIGHT_PAD_COL=50         # Column where right padding starts
+declare -r RIGHT_BORDER_COL=52      # Column for right border (indent + frame width)
+
+# Color palette
+declare -r C_RESET="\033[0m"
+declare -r C_BLUE="\033[38;5;75m"
+declare -r C_GREEN="\033[38;5;107m"
+declare -r C_ORANGE="\033[38;5;209m"
+declare -r C_PURPLE="\033[38;5;141m"
+declare -r C_DIM="\033[38;5;245m"
+declare -r C_RED="\033[38;5;203m"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Primitives - unified rendering building blocks
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Solid bar (top or bottom border)
+_bar() {
+  local color="${1:-$C_BLUE}"
+  printf "%${FRAME_INDENT}s${color}" ""
+  printf '▓%.0s' {1..48}
+  printf "${C_RESET}\n"
 }
 
-# Center text within width
-center_text() {
+# Empty line inside frame (just side borders)
+_framed_empty() {
+  local color="${1:-$C_BLUE}"
+  printf "%${FRAME_INDENT}s${color}▓${C_RESET}" ""
+  printf "\033[${RIGHT_BORDER_COL}G${color}▓${C_RESET}\n"
+}
+
+# Content line inside frame - cursor positioning ensures alignment
+_framed_line() {
   local text="$1"
-  local width="${2:-$CONTENT_WIDTH}"
-  local text_len=${#text}
-  local pad_total=$((width - text_len))
-  local pad_left=$((pad_total / 2))
-  local pad_right=$((pad_total - pad_left))
-  printf "%*s%s%*s" "$pad_left" "" "$text" "$pad_right" ""
+  local color="${2:-$C_BLUE}"
+  local style="${3:-}"  # "bold", "dim", or empty
+
+  # Left border + padding
+  printf "%${FRAME_INDENT}s${color}▓${C_RESET}  " ""
+
+  # Apply style
+  case "$style" in
+    bold) printf "\033[1m" ;;
+    dim)  printf "${C_DIM}" ;;
+  esac
+
+  # Content
+  printf "%s" "$text"
+
+  # Reset style
+  [[ -n "$style" ]] && printf "${C_RESET}"
+
+  # Jump to column 50, print padding + right border
+  printf "\033[${RIGHT_PAD_COL}G  ${color}▓${C_RESET}\n"
+}
+
+# Bare centered text (no side borders)
+# Usage: _bare_center "text" [emoji_count] [style]
+_bare_center() {
+  local text="$1"
+  local emoji_count="${2:-0}"
+  local style="${3:-}"
+
+  # Calculate padding: center within FRAME_WIDTH, offset by FRAME_INDENT
+  # Subtract emoji_count because each emoji displays as 2 cols but counts as 1
+  local text_width=$(( ${#text} + emoji_count ))
+  local pad=$(( (FRAME_WIDTH - text_width) / 2 + FRAME_INDENT ))
+  [[ $pad -lt 0 ]] && pad=0
+
+  # Apply style
+  case "$style" in
+    bold) printf "\033[1m" ;;
+    dim)  printf "${C_DIM}" ;;
+  esac
+
+  printf "%${pad}s%s" "" "$text"
+
+  # Reset style
+  [[ -n "$style" ]] && printf "${C_RESET}"
+
+  printf "\n"
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# High-level frame renderer
+# Usage: render_frame COLOR "line1" "line2" ...
+# Special syntax:
+#   ""         = empty line
+#   ">text"    = bold centered title (best-effort centering)
+#   "~text"    = dim text
+# ─────────────────────────────────────────────────────────────────────────────
+
+render_frame() {
+  local color="$1"
+  shift
+
+  echo ""
+  echo ""
+  _bar "$color"
+  _framed_empty "$color"
+
+  for line in "$@"; do
+    if [[ -z "$line" ]]; then
+      _framed_empty "$color"
+    elif [[ "$line" == ">"* ]]; then
+      # Centered bold title - best effort centering
+      local title="${line#>}"
+      local len=${#title}
+      local pad=$(( (CONTENT_MAX - len) / 2 ))
+      [[ $pad -lt 0 ]] && pad=0
+      local centered
+      centered=$(printf "%${pad}s%s" "" "$title")
+      _framed_line "$centered" "$color" "bold"
+    elif [[ "$line" == "~"* ]]; then
+      # Dim text
+      _framed_line "${line#\~}" "$color" "dim"
+    else
+      _framed_line "$line" "$color"
+    fi
+  done
+
+  _framed_empty "$color"
+  _bar "$color"
+  echo ""
+  echo ""
 }
 
 # Truncate text with ellipsis if too long
 truncate() {
   local text="$1"
-  local max="${2:-$CONTENT_WIDTH}"
+  local max="${2:-$CONTENT_MAX}"
   if [[ ${#text} -gt $max ]]; then
     echo "${text:0:$((max-3))}..."
   else
@@ -35,37 +150,25 @@ truncate() {
   fi
 }
 
-# Config locations: project-first fallback to user
+# ═══════════════════════════════════════════════════════════════════════════════
+# CONFIGURATION
+# ═══════════════════════════════════════════════════════════════════════════════
+
 CONFIG_FILE=""
 
 ensure_config() {
   local project_cfg="$(pwd)/.claude/.session-plugin-config.json"
   local user_cfg="$HOME/.claude/.session-plugin-config.json"
 
-  # Project config takes priority, fallback to user config
   if [[ -f "$project_cfg" ]]; then
     CONFIG_FILE="$project_cfg"
   elif [[ -f "$user_cfg" ]]; then
     CONFIG_FILE="$user_cfg"
   else
-    # No config found - show setup message
-    local C="\033[38;5;209m"  # Color (orange)
-    local R="\033[0m"          # Reset
-    local B="\033[1;38;5;209m" # Bold
-    local W="\033[1;37m"       # White bold
-    local title="⚙  SETUP REQUIRED"
-    local centered_title=$(center_text "$title")
-    echo ""
-    echo ""
-    echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
-    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
-    echo -e "    ${C}▓${R}  ${B}${centered_title}${R}  ${C}▓${R}"
-    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
-    echo -e "    ${C}▓${R}  $(pad_left "Run /session:configure to get started")  ${C}▓${R}"
-    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
-    echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
-    echo ""
-    echo ""
+    render_frame "$C_ORANGE" \
+      ">⚙  SETUP REQUIRED" \
+      "" \
+      "Run /session:configure to get started"
     return 1
   fi
 
@@ -78,11 +181,15 @@ ensure_config() {
   export AUTO_EXECUTE USE_CLIPBOARD TERMINAL_OVERRIDE MODEL CLAUDE_FLAGS CONFIG_FILE
 }
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# SESSION MANAGEMENT
+# ═══════════════════════════════════════════════════════════════════════════════
+
 show_error() {
   local msg="$1"
   echo ""
-  echo -e "    \033[38;5;203m▓▓▓ ERROR ▓▓▓\033[0m"
-  echo -e "    \033[38;5;245m$msg\033[0m"
+  echo -e "    ${C_RED}▓▓▓ ERROR ▓▓▓${C_RESET}"
+  echo -e "    ${C_DIM}$msg${C_RESET}"
   echo ""
 }
 
@@ -94,8 +201,8 @@ get_session_info() {
 
   if [[ ! -f "$SESSION_FILE" ]]; then
     show_error "No session captured yet."
-    echo -e "    \033[38;5;245mThe SessionStart hook captures session IDs automatically.\033[0m"
-    echo -e "    \033[38;5;245mTry starting a new session, or run /session:configure.\033[0m"
+    echo -e "    ${C_DIM}The SessionStart hook captures session IDs automatically.${C_RESET}"
+    echo -e "    ${C_DIM}Try starting a new session, or run /session:configure.${C_RESET}"
     return 1
   fi
 
@@ -109,18 +216,29 @@ get_session_info() {
 }
 
 show_session_id() {
-  local C="\033[38;5;75m"   # Color (blue)
-  local R="\033[0m"          # Reset
-  local id_line="🔑  $SESSION_ID"
-  echo ""
-  echo ""
-  echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
-  echo -e "    ${C}▓${R}  $(pad_left "$id_line")  ${C}▓${R}"
-  echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
-  [[ "$USE_CLIPBOARD" == "true" ]] && copy_to_clipboard "$SESSION_ID"
-  echo ""
-  echo ""
+  if [[ "$USE_CLIPBOARD" == "true" ]]; then
+    # Clipboard enabled: show ID inside frame
+    render_frame "$C_BLUE" "🔑  $SESSION_ID"
+    copy_to_clipboard "$SESSION_ID"
+  else
+    # No clipboard: bare centered lines for triple-click selection
+    echo ""
+    echo ""
+    _bar "$C_BLUE"
+    echo ""
+    _bare_center "$SESSION_ID"
+    echo ""
+    _bar "$C_BLUE"
+    echo ""
+    _bare_center "🔑  triple-click to copy" 1 dim
+    echo ""
+    echo ""
+  fi
 }
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# COMMAND BUILDING
+# ═══════════════════════════════════════════════════════════════════════════════
 
 build_command() {
   local mode="${1:-restart}"
@@ -138,6 +256,21 @@ build_command() {
   export CMD
 }
 
+build_spawn_command() {
+  local SAFE_DIR=$(printf '%q' "$(pwd)")
+  local FLAGS=""
+  [[ -n "$CLAUDE_FLAGS" ]] && FLAGS="$CLAUDE_FLAGS "
+  [[ -n "$MODEL" ]] && FLAGS="${FLAGS}--model $MODEL "
+
+  CMD="cd $SAFE_DIR && claude ${FLAGS}"
+  CMD="${CMD% }"  # Trim trailing space
+  export CMD
+}
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CLIPBOARD
+# ═══════════════════════════════════════════════════════════════════════════════
+
 copy_to_clipboard() {
   local text="$1"
   local copied=false
@@ -150,7 +283,7 @@ copy_to_clipboard() {
   elif command -v xsel &>/dev/null; then
     echo "$text" | xsel --clipboard --input && copied=true
   fi
-  [[ "$copied" == "true" ]] && echo -e "    \033[38;5;107m✓ Copied to clipboard\033[0m"
+  [[ "$copied" == "true" ]] && echo -e "    ${C_GREEN}✓ Copied to clipboard${C_RESET}"
 }
 
 output_command() {
@@ -160,14 +293,18 @@ output_command() {
 
   echo ""
   echo ""
-  echo -e "    \033[38;5;209m▓▓▓\033[0m \033[1mCOMMAND\033[0m \033[38;5;245m(triple-click to select)\033[0m"
+  echo -e "    ${C_ORANGE}▓▓▓${C_RESET} \033[1mCOMMAND\033[0m ${C_DIM}(triple-click to select)${C_RESET}"
   echo ""
-  echo -e "\033[38;5;252m$CMD\033[0m"
+  echo -e "\033[38;5;252m$CMD${C_RESET}"
   echo ""
   [[ "$USE_CLIPBOARD" == "true" ]] && copy_to_clipboard "$CMD"
-  echo -e "    \033[38;5;245m$action_hint\033[0m"
+  echo -e "    ${C_DIM}$action_hint${C_RESET}"
   echo ""
 }
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# TERMINAL AUTOMATION
+# ═══════════════════════════════════════════════════════════════════════════════
 
 detect_terminal() {
   if [[ -n "$TERMINAL_OVERRIDE" && "$TERMINAL_OVERRIDE" != "auto" ]]; then
@@ -210,6 +347,10 @@ EOF
   return 0
 }
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# EXECUTION
+# ═══════════════════════════════════════════════════════════════════════════════
+
 execute_restart() {
   if [[ "$AUTO_EXECUTE" != "true" ]]; then
     output_command restart
@@ -217,25 +358,13 @@ execute_restart() {
   fi
 
   if open_tab_and_run "$CMD"; then
-    local C="\033[38;5;107m"  # Color
-    local R="\033[0m"          # Reset
-    local B="\033[1;38;5;107m" # Bold
-    local title="✓  SESSION RESUMED"
-    local centered_title=$(center_text "$title")
-    echo ""
-    echo ""
-    echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
-    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
-    echo -e "    ${C}▓${R}  ${B}${centered_title}${R}  ${C}▓${R}"
-    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
-    echo -e "    ${C}▓${R}  $(pad_left "Continuing in new tab")  ${C}▓${R}"
-    echo -e "    ${C}▓${R}  $(pad_left "You can safely close this one" )  ${C}▓${R}"
-    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
-    echo -e "    ${C}▓${R}  $(pad_left "⌘W  or  exit")  ${C}▓${R}"
-    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
-    echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
-    echo ""
-    echo ""
+    render_frame "$C_GREEN" \
+      ">✓  SESSION RESUMED" \
+      "" \
+      "Continuing in new tab" \
+      "You can safely close this one" \
+      "" \
+      "⌘W  or  exit"
   else
     show_error "Could not open new tab. Falling back to manual mode."
     output_command restart
@@ -258,44 +387,16 @@ execute_fork() {
   fi
 
   if open_tab_and_run "$fork_cmd"; then
-    local C="\033[38;5;209m"  # Color (orange)
-    local R="\033[0m"          # Reset
-    local B="\033[1;38;5;209m" # Bold
-    local D="\033[38;5;245m"   # Dim
-    local title="⑂  SESSION FORKED"
-    local centered_title=$(center_text "$title")
-    echo ""
-    echo ""
-    echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
-    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
-    echo -e "    ${C}▓${R}  ${B}${centered_title}${R}  ${C}▓${R}"
-    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
-    echo -e "    ${C}▓${R}  $(pad_left "New branch opened in new tab")  ${C}▓${R}"
+    local lines=(">⑂  SESSION FORKED" "" "New branch opened in new tab")
     if [[ -n "$prompt" ]]; then
-      local prompt_line="Prompt: $(truncate "$prompt" 33)"
-      echo -e "    ${C}▓${R}  ${D}$(pad_left "$prompt_line")${R}  ${C}▓${R}"
+      lines+=("~Prompt: $(truncate "$prompt" 33)")
     fi
-    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
-    echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
-    echo ""
-    echo ""
+    render_frame "$C_ORANGE" "${lines[@]}"
   else
     show_error "Could not open new tab. Falling back to manual mode."
     [[ -n "$prompt" ]] && CMD="$fork_cmd"
     output_command fork
   fi
-}
-
-build_spawn_command() {
-  local SAFE_DIR=$(printf '%q' "$(pwd)")
-  local FLAGS=""
-  [[ -n "$CLAUDE_FLAGS" ]] && FLAGS="$CLAUDE_FLAGS "
-  [[ -n "$MODEL" ]] && FLAGS="${FLAGS}--model $MODEL "
-
-  CMD="cd $SAFE_DIR && claude ${FLAGS}"
-  # Trim trailing space
-  CMD="${CMD% }"
-  export CMD
 }
 
 execute_spawn() {
@@ -314,27 +415,11 @@ execute_spawn() {
   fi
 
   if open_tab_and_run "$spawn_cmd"; then
-    local C="\033[38;5;141m"  # Color (purple)
-    local R="\033[0m"          # Reset
-    local B="\033[1;38;5;141m" # Bold
-    local D="\033[38;5;245m"   # Dim
-    local title="✦  SESSION SPAWNED"
-    local centered_title=$(center_text "$title")
-    echo ""
-    echo ""
-    echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
-    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
-    echo -e "    ${C}▓${R}  ${B}${centered_title}${R}  ${C}▓${R}"
-    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
-    echo -e "    ${C}▓${R}  $(pad_left "Fresh session opened in new tab")  ${C}▓${R}"
+    local lines=(">✦  SESSION SPAWNED" "" "Fresh session opened in new tab")
     if [[ -n "$prompt" ]]; then
-      local prompt_line="Prompt: $(truncate "$prompt" 33)"
-      echo -e "    ${C}▓${R}  ${D}$(pad_left "$prompt_line")${R}  ${C}▓${R}"
+      lines+=("~Prompt: $(truncate "$prompt" 33)")
     fi
-    echo -e "    ${C}▓${R}                                              ${C}▓${R}"
-    echo -e "    ${C}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${R}"
-    echo ""
-    echo ""
+    render_frame "$C_PURPLE" "${lines[@]}"
   else
     show_error "Could not open new tab. Falling back to manual mode."
     [[ -n "$prompt" ]] && CMD="$spawn_cmd"
