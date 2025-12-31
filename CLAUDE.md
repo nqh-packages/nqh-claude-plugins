@@ -107,14 +107,7 @@ One-liner description (extracted to root README).
 
 **VISUAL markers**: Wrap any visual (image, GIF, code block) in `<!-- VISUAL -->` and `<!-- /VISUAL -->`. Image paths are auto-converted for root README.
 
-**GIF note**: If visual is a GIF, add Safari hint below it:
-```markdown
-<!-- VISUAL -->
-![Demo](assets/demo.gif)
-
-<sub>Safari: right-click → Play Animation</sub>
-<!-- /VISUAL -->
-```
+**GIF tip**: For GIFs, add "Right-click → Play Animation" hint in the first frame (title card) for Safari users where autoplay is disabled.
 
 ## README Auto-Generation
 

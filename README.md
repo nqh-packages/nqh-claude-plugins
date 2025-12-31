@@ -24,8 +24,6 @@ Commands to restart or fork your Claude Code session automatically with beautifu
 
 ![Demo: typing /session:restart shows green SESSION RESUMED banner, /session:fork shows orange SESSION FORKED banner](./plugins/session/assets/demo.gif)
 
-<sub>Safari: right-click → Play Animation</sub>
-
 <!-- END AUTO-GENERATED -->
 
 ---
