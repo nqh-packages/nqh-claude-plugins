@@ -16,6 +16,18 @@
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '<plugin-reminder>Consider loading session:delegating skill if task needs user interaction, own subagents, or exceeds subagent context.</plugin-reminder>'",
+            "timeout": 100
+          }
+        ]
+      }
     ]
   }
 }

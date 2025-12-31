@@ -1,13 +1,15 @@
 #!/bin/bash
-# Brief intro to session plugin skills
+# Session plugin skills context for Claude
 
 cat << 'EOF'
-# Session Plugin Skills
+<plugin-reminder>
+# Session Skills
 
-**delegating** - Activates when about to use Task tool. Helps decide fork/spawn vs subagent:
-- Task too big for subagent context → fork/spawn
-- Task needs user interaction → fork/spawn
-- Task needs to nest subagents → fork/spawn
+When delegating tasks, load `session:delegating` skill if ANY of these apply:
+- Task may need to ask user questions
+- Task will spawn its own subagents
+- Task is too big for subagent context
 
-**restarting-sessions** - Activates after config changes (new hook, agent, skill, plugin) that need reload.
+When user configures new hooks, agents, skills, or plugins, load `session:restarting-sessions` skill.
+</plugin-reminder>
 EOF
