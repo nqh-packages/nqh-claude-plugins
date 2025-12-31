@@ -22,7 +22,7 @@ Restart or fork your Claude Code session with beautiful UI feedback.
 /plugin install session@nqh-plugins
 ```
 
-![Session Plugin Demo](./plugins/session/assets/demo.gif)
+![Demo: typing /session:restart shows green SESSION RESUMED banner, /session:fork shows orange SESSION FORKED banner](./plugins/session/assets/demo.gif)
 
 <!-- END AUTO-GENERATED -->
 

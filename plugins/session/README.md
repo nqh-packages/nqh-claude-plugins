@@ -3,7 +3,7 @@
 Restart or fork your Claude Code session with beautiful UI feedback.
 
 <!-- VISUAL -->
-![Session Plugin Demo](assets/demo.gif)
+![Demo: typing /session:restart shows green SESSION RESUMED banner, /session:fork shows orange SESSION FORKED banner](assets/demo.gif)
 
 <sub>Safari: right-click → Play Animation</sub>
 <!-- /VISUAL -->
