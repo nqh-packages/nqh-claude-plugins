@@ -1,5 +1,5 @@
 {
-  "description": "Session plugin hooks: captures session ID and provides delegation reminders",
+  "description": "Session plugin hooks: captures session ID at startup",
   "hooks": {
     "SessionStart": [
       {
@@ -8,41 +8,6 @@
             "type": "command",
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh",
             "timeout": 500
-          }
-        ]
-      }
-    ],
-    "PreCompact": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/skills-context.sh",
-            "timeout": 100
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "matcher": "(?i)(delegat|orchestrat|spawn|fork|subagent|agents? in parallel|split.*work|hand.*off|multiple.*agent|background.*task|concurrent|distribut|offload|async.*task|new.*session|separate.*session|restart.*session)",
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "User mentioned delegation. Return: {\"systemMessage\": \"Load session:delegating skill before using Task tool.\"}",
-            "timeout": 3000
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "Task",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/task-reminder.sh",
-            "timeout": 100
           }
         ]
       }

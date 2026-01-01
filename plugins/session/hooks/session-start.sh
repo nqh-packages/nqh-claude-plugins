@@ -21,6 +21,3 @@ if [[ -n "$session_id" && "$session_id" != "null" ]]; then
   fi
 fi
 
-# 2. Output skills context (visible to Claude)
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-"$SCRIPT_DIR/skills-context.sh"
