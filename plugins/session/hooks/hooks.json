@@ -1,5 +1,5 @@
 {
-  "description": "Session plugin hooks: captures session ID and introduces skills",
+  "description": "Session plugin hooks: captures session ID and provides delegation reminders",
   "hooks": {
     "SessionStart": [
       {
@@ -19,6 +19,18 @@
             "type": "command",
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/skills-context.sh",
             "timeout": 100
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "(?i)(delegat|orchestrat|spawn|fork|subagent|agents? in parallel|split.*work|hand.*off|multiple.*agent|background.*task|concurrent|distribut|offload|async.*task|new.*session|separate.*session|restart.*session)",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "User mentioned delegation. Return: {\"systemMessage\": \"Load session:delegating skill before using Task tool.\"}",
+            "timeout": 3000
           }
         ]
       }

@@ -58,11 +58,12 @@ Opens new terminal tab with `claude --resume <id>`
 
 ## Hooks
 
-| Event | Purpose |
-|-------|---------|
-| `SessionStart` | Captures session_id, outputs skills context |
-| `PreCompact` | Re-injects skills context (survives compaction) |
-| `PreToolUse (Task)` | Nudges Claude to consider `session:delegating` skill |
+| Event | Type | Purpose |
+|-------|------|---------|
+| `SessionStart` | command | Captures session_id to temp file |
+| `PreCompact` | command | Re-injects skills context (survives compaction) |
+| `UserPromptSubmit` | prompt | Detects delegation keywords, reminds about skill |
+| `PreToolUse (Task)` | command | Nudges Claude to consider `session:delegating` skill |
 
 ## Skills
 
