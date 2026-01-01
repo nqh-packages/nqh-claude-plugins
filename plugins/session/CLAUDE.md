@@ -12,7 +12,8 @@ session/
 ├── hooks/
 │   ├── hooks.json                # SessionStart + PreToolUse hooks
 │   ├── session-capture.sh        # Captures session_id on session start
-│   └── skills-intro.sh           # Introduces skills to Claude
+│   ├── skills-intro.sh           # Introduces skills to Claude
+│   └── task-reminder.sh          # PreToolUse reminder for Task tool
 ├── commands/
 │   ├── restart.md                # /session:restart
 │   ├── fork.md                   # /session:fork (asks for new task)

@@ -83,4 +83,4 @@ Saved to `.claude/.session-plugin-config.json` (project) or `~/.claude/.session-
 
 ---
 
-**v3.3.0** · PreToolUse hook nudges skill loading before Task tool
+**v3.3.1** · Hooks now run scripts instead of inline commands
