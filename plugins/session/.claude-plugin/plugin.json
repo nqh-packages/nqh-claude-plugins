@@ -1,6 +1,6 @@
 {
   "name": "session",
-  "version": "3.3.1",
+  "version": "3.4.0",
   "description": "Intelligently restart, fork, or delegate your Claude Code sessions with beautiful UI feedback",
   "author": {
     "name": "nqh-packages",
