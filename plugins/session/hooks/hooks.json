@@ -12,6 +12,17 @@
         ]
       }
     ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/skills-context.sh",
+            "timeout": 100
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Task",
