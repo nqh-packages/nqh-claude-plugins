@@ -83,4 +83,4 @@ Saved to `.claude/.session-plugin-config.json` (project) or `~/.claude/.session-
 
 ---
 
-**v3.3.1** · Hooks now run scripts instead of inline commands
+**v3.6.0** · Fix spawn/fork prompt passing, strip --betas flag for Terminal compatibility

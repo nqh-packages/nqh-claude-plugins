@@ -11,7 +11,7 @@
       "name": "session",
       "source": "./plugins/session",
       "description": "Intelligently restart, fork, or delegate your Claude Code sessions with beautiful UI feedback",
-      "version": "3.5.0"
+      "version": "3.6.0"
     }
   ]
 }

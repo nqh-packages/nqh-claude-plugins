@@ -248,12 +248,28 @@ show_session_id() {
 # COMMAND BUILDING
 # ═══════════════════════════════════════════════════════════════════════════════
 
+strip_betas() {
+  # Remove --betas and its value from flags (breaks AppleScript Terminal)
+  # Also normalize multiple spaces to single space
+  echo "$1" | sed -E 's/--betas[[:space:]]+[^[:space:]]+[[:space:]]*//' | sed 's/  */ /g' | sed 's/^ //; s/ $//'
+}
+
+has_betas() {
+  [[ "$CLAUDE_FLAGS" == *"--betas"* ]]
+}
+
+warn_betas_stripped() {
+  if has_betas; then
+    echo -e "    ${C_DIM}⚠ --betas flag stripped (Terminal compatibility)${C_RESET}"
+  fi
+}
+
 build_command() {
   local mode="${1:-restart}"
   local SAFE_DIR=$(printf '%q' "$PROJECT_DIR")
   local SAFE_ID=$(printf '%q' "$SESSION_ID")
   local FLAGS=""
-  [[ -n "$CLAUDE_FLAGS" ]] && FLAGS="$CLAUDE_FLAGS "
+  [[ -n "$CLAUDE_FLAGS" ]] && FLAGS="$(strip_betas "$CLAUDE_FLAGS") "
   [[ -n "$MODEL" ]] && FLAGS="${FLAGS}--model $MODEL "
 
   if [[ "$mode" == "fork" ]]; then
@@ -267,7 +283,7 @@ build_command() {
 build_spawn_command() {
   local SAFE_DIR=$(printf '%q' "$(pwd)")
   local FLAGS=""
-  [[ -n "$CLAUDE_FLAGS" ]] && FLAGS="$CLAUDE_FLAGS "
+  [[ -n "$CLAUDE_FLAGS" ]] && FLAGS="$(strip_betas "$CLAUDE_FLAGS") "
   [[ -n "$MODEL" ]] && FLAGS="${FLAGS}--model $MODEL "
 
   CMD="cd $SAFE_DIR && claude ${FLAGS}"
@@ -329,23 +345,26 @@ open_tab_and_run() {
   local cmd="$1"
   local exit_code
 
+  # Escape for AppleScript string: backslashes then double quotes
+  local escaped_cmd="${cmd//\\/\\\\}"
+  escaped_cmd="${escaped_cmd//\"/\\\"}"
+
   if [[ "$(detect_terminal)" == "iterm" ]]; then
     osascript <<EOF 2>/dev/null
 tell application "iTerm"
   tell current window
     create tab with default profile
-    tell current session to write text "$cmd"
+    tell current session to write text "$escaped_cmd"
   end tell
 end tell
 EOF
     exit_code=$?
   else
+    # Use do script without "in front window" - creates new window (more reliable)
     osascript <<EOF 2>/dev/null
 tell application "Terminal"
   activate
-  tell application "System Events" to keystroke "t" using command down
-  delay 0.3
-  do script "$cmd" in front window
+  do script "$escaped_cmd"
 end tell
 EOF
     exit_code=$?
@@ -389,17 +408,25 @@ execute_fork() {
 
   local fork_cmd="$CMD"
   if [[ -n "$prompt" ]]; then
+    # Escape for shell double-quoting: \ " $ `
+    # Also convert newlines to spaces
     local escaped
-    escaped=$(printf '%s' "$prompt" | sed "s/'/'\\\\''/g")
-    fork_cmd="$fork_cmd '$escaped'"
+    escaped=$(printf '%s' "$prompt" | tr '\n' ' ')
+    escaped="${escaped//\\/\\\\}"
+    escaped="${escaped//\"/\\\"}"
+    escaped="${escaped//\$/\\\$}"
+    escaped="${escaped//\`/\\\`}"
+    fork_cmd="$fork_cmd \"$escaped\""
   fi
 
   if open_tab_and_run "$fork_cmd"; then
     local lines=(">⑂  SESSION FORKED" "" "New branch opened in new tab")
     if [[ -n "$prompt" ]]; then
-      lines+=("~Prompt: $(truncate "$prompt" 33)")
+      local display_prompt=$(echo "$prompt" | tr '\n' ' ')
+      lines+=("~Prompt: $(truncate "$display_prompt" 33)")
     fi
     render_frame "$C_ORANGE" "${lines[@]}"
+    warn_betas_stripped
   else
     show_error "Could not open new tab. Falling back to manual mode."
     [[ -n "$prompt" ]] && CMD="$fork_cmd"
@@ -417,17 +444,25 @@ execute_spawn() {
 
   local spawn_cmd="$CMD"
   if [[ -n "$prompt" ]]; then
+    # Escape for shell double-quoting: \ " $ `
+    # Also convert newlines to spaces
     local escaped
-    escaped=$(printf '%s' "$prompt" | sed "s/'/'\\\\''/g")
-    spawn_cmd="$spawn_cmd '$escaped'"
+    escaped=$(printf '%s' "$prompt" | tr '\n' ' ')
+    escaped="${escaped//\\/\\\\}"
+    escaped="${escaped//\"/\\\"}"
+    escaped="${escaped//\$/\\\$}"
+    escaped="${escaped//\`/\\\`}"
+    spawn_cmd="$spawn_cmd \"$escaped\""
   fi
 
   if open_tab_and_run "$spawn_cmd"; then
     local lines=(">✦  SESSION SPAWNED" "" "Fresh session opened in new tab")
     if [[ -n "$prompt" ]]; then
-      lines+=("~Prompt: $(truncate "$prompt" 33)")
+      local display_prompt=$(echo "$prompt" | tr '\n' ' ')
+      lines+=("~Prompt: $(truncate "$display_prompt" 33)")
     fi
     render_frame "$C_PURPLE" "${lines[@]}"
+    warn_betas_stripped
   else
     show_error "Could not open new tab. Falling back to manual mode."
     [[ -n "$prompt" ]] && CMD="$spawn_cmd"

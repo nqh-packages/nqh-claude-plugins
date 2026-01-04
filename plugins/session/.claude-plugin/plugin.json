@@ -1,10 +1,17 @@
 {
   "name": "session",
-  "version": "3.5.0",
+  "version": "3.6.0",
   "description": "Intelligently restart, fork, or delegate your Claude Code sessions with beautiful UI feedback",
   "author": {
     "name": "nqh-packages",
     "email": "dev@ngoquochuy.com"
   },
-  "keywords": ["session", "restart", "fork", "spawn", "resume", "workflow"]
+  "keywords": [
+    "session",
+    "restart",
+    "fork",
+    "spawn",
+    "resume",
+    "workflow"
+  ]
 }
