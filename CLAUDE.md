@@ -170,6 +170,49 @@ Or test directly:
 source plugins/session/lib.sh && execute_restart
 ```
 
+## Cross-Plugin Skill References
+
+Agents in one plugin can reference skills from another plugin using the `skills:` frontmatter field. This enables modular plugin architecture with core + addon patterns.
+
+**How it works:**
+- Skills are loaded from the cache at `/Users/huy/.claude/plugins/cache/<marketplace>/<plugin>/<version>/skills/`
+- The `skills:` field in agent frontmatter accepts skill names from any installed plugin
+- Skills are resolved by name across all installed plugins
+
+**Example architecture:**
+```
+dev-fundamentals (core plugin)
+├── skills/
+│   ├── debugging-systematically/
+│   ├── testing-systematically/
+│   └── tdd-methodology/
+└── agents/
+    └── debugger.md
+
+dev-fundamentals-react (addon plugin)
+└── agents/
+    └── react-test-pro.md  # skills: testing-systematically, tdd-methodology
+```
+
+**Agent referencing skills from another plugin:**
+```markdown
+---
+name: react-test-pro
+description: React testing specialist
+skills: testing-systematically, tdd-methodology
+---
+
+# React Test Pro Agent
+...
+```
+
+**Requirements:**
+- Both plugins must be installed
+- Skill names must match exactly
+- Core plugin should be installed first (skills must exist in cache)
+
+**Tested:** 2025-01-05 - Verified that `test-addon-agent` in `test-plugin-addon` successfully loaded `test-core-skill` from `test-plugin-core`.
+
 ## Conventions
 
 | Pattern | Purpose |
