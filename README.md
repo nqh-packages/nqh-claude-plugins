@@ -30,6 +30,7 @@ Automatic daily backup of any folder to a private GitHub repo using macOS launch
 │  ⏰ Daily @ 9 AM (via launchd)          │
 │  📦 Auto-commit if changes exist        │
 │  🔄 Skip if no changes                  │
+│  ⚠️  Warns about large files/git repos  │
 └─────────────────────────────────────────┘
 ```
 
