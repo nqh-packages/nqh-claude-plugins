@@ -97,5 +97,5 @@ Logs are stored at `~/.git-backup-<job-label>.log`
 
 ---
 
-**v1.1.0** · Added doctor command, smart .gitignore, large file/embedded repo detection
-**v1.0.0** · Initial release
+**v0.2.0** · Added doctor command, smart .gitignore, large file/embedded repo detection
+**v0.1.0** · Initial release

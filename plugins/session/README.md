@@ -83,4 +83,4 @@ Saved to `.claude/.session-plugin-config.json` (project) or `~/.claude/.session-
 
 ---
 
-**v3.6.0** · Fix spawn/fork prompt passing, strip --betas flag for Terminal compatibility
+**v1.6.0** · Fix spawn/fork prompt passing, strip --betas flag for Terminal compatibility

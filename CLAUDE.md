@@ -49,11 +49,13 @@ nqh-claude-plugins/
 ```json
 {
   "name": "<name>",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "...",
   "hooks": "./hooks/hooks.json"
 }
 ```
+
+**Versioning**: Start at `0.1.0` for new plugins (pre-release). Bump to `1.0.0` when stable and battle-tested.
 
 2. Register in `.claude-plugin/marketplace.json`
 
