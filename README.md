@@ -14,6 +14,25 @@ A catalog of Claude Code plugins for workflow automation.
 
 <!-- AUTO-GENERATED: run `bun run build:readme` to update -->
 
+### [git-backup](./plugins/git-backup/)
+
+Automatic daily backup of any folder to a private GitHub repo using macOS launchd.
+
+```
+/plugin install git-backup@nqh-plugins
+```
+
+```
+┌─────────────────────────────────────────┐
+│  Your Folder    ──────►  Private Repo   │
+│  ~/.claude             github.com/...   │
+│                                         │
+│  ⏰ Daily @ 9 AM (via launchd)          │
+│  📦 Auto-commit if changes exist        │
+│  🔄 Skip if no changes                  │
+└─────────────────────────────────────────┘
+```
+
 ### [session](./plugins/session/)
 
 Intelligently restart, fork, or delegate your Claude Code sessions with beautiful UI feedback.

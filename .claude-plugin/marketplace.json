@@ -12,6 +12,12 @@
       "source": "./plugins/session",
       "description": "Intelligently restart, fork, or delegate your Claude Code sessions with beautiful UI feedback",
       "version": "3.6.0"
+    },
+    {
+      "name": "git-backup",
+      "source": "./plugins/git-backup",
+      "description": "Automatic daily backup of any folder to a private GitHub repo using launchd",
+      "version": "1.0.0"
     }
   ]
 }

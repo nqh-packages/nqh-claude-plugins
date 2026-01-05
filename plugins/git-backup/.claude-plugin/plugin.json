@@ -1,0 +1,9 @@
+{
+  "name": "git-backup",
+  "version": "1.0.0",
+  "description": "Automatic daily backup of any folder to a private GitHub repo using launchd",
+  "author": {
+    "name": "nqh",
+    "url": "https://github.com/nqh-packages"
+  }
+}
