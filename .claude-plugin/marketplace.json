@@ -18,6 +18,36 @@
       "source": "./plugins/git-backup",
       "description": "Automatic daily backup of any folder to a private GitHub repo using launchd",
       "version": "0.2.0"
+    },
+    {
+      "name": "dev-fundamentals",
+      "source": "./plugins/dev-fundamentals",
+      "description": "Core development skills: debugging, testing, TDD, and research methodologies",
+      "version": "0.1.0"
+    },
+    {
+      "name": "dev-fundamentals-swift",
+      "source": "./plugins/dev-fundamentals-swift",
+      "description": "Swift/iOS testing specialist with Swift Testing framework and ViewInspector",
+      "version": "0.1.0"
+    },
+    {
+      "name": "dev-fundamentals-react",
+      "source": "./plugins/dev-fundamentals-react",
+      "description": "React testing specialist with Vitest, React Testing Library, and Playwright",
+      "version": "0.1.0"
+    },
+    {
+      "name": "dev-fundamentals-typescript",
+      "source": "./plugins/dev-fundamentals-typescript",
+      "description": "TypeScript/Node.js testing specialist with Vitest and MSW",
+      "version": "0.1.0"
+    },
+    {
+      "name": "dev-fundamentals-react-native",
+      "source": "./plugins/dev-fundamentals-react-native",
+      "description": "React Native testing specialist with Jest, Detox, and Maestro",
+      "version": "0.1.0"
     }
   ]
 }

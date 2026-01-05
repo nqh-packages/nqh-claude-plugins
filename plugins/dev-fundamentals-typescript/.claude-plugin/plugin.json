@@ -1,0 +1,5 @@
+{
+  "name": "dev-fundamentals-typescript",
+  "version": "0.1.0",
+  "description": "TypeScript/Node.js testing specialist with Vitest and MSW"
+}
