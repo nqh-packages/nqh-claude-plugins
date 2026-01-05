@@ -71,6 +71,16 @@ You MUST complete each phase before proceeding to the next.
 - **Inverse:** Can you verify by reversing (e.g., check division by multiplying)?
 - **Cross-check:** Can you verify using a different method/library?
 
+**Blind Spot Check (Reveal Unknown Unknowns)**
+
+After ZOMBIES enumeration, ask:
+- "What edge cases do experts test that laypeople miss?"
+- "What do experts disagree on about testing this type of code?"
+- "What good questions am I not asking about test coverage?"
+- "What are open questions about testing this technology/pattern?"
+
+If any reveal new test cases → add to ZOMBIES list.
+
 ### Phase 2.5: Risk Analysis Confidence Report (MANDATORY CHECKPOINT)
 
 **Goal:** Research best practices, then present test strategy to user BEFORE writing tests.

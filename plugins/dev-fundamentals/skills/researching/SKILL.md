@@ -15,6 +15,12 @@ NEED external info, docs, or validation?
 └── NO → Skip this skill
 ```
 
+**Blind Spot Check** - Before skipping, ask yourself:
+- What good questions am I not asking about this topic?
+- What would an expert investigate that I'm skipping?
+
+If either reveals gaps → research anyway.
+
 ## Phase 1: Assess Complexity
 
 | Factor | Single Agent | Multi-Agent |
@@ -49,6 +55,13 @@ Task({
 | Purpose | YES | Clear research goal |
 | Boundaries | YES | What's in/out of scope |
 | Output format | YES | What to return |
+| Blind spot prompts | RECOMMENDED | Reveal unknown unknowns |
+
+**Blind Spot Prompts** - Include 1-2 in delegation prompt:
+- "What good questions am I not asking about [topic]?"
+- "What do experts disagree on about [topic], and why?"
+- "What would an expert investigate that a layperson would skip?"
+- "What are open/unsolved questions about [topic]?"
 
 ## Phase 3: Synthesize Results
 

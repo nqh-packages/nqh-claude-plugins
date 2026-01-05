@@ -120,7 +120,17 @@ You MUST complete each phase before proceeding to the next.
       - 4. Why was ID truncated? -> DB column is too short. (ROOT CAUSE)
     - **Fixing the null check (Level 1) is a failure. You must fix the DB column (Level 4).**
 
-3.  **Test Minimally**
+3.  **Blind Spot Check (Reveal Unknown Unknowns)**
+
+    After forming your hypothesis, ask:
+    - "What would an expert debug differently here?"
+    - "What good questions am I not asking about this failure?"
+    - "What do experts disagree on about this type of bug?"
+    - "What are the open questions about this technology/pattern?"
+
+    If any reveal new directions → investigate before proceeding.
+
+4.  **Test Minimally**
     - Prove the hypothesis _without_ fixing it yet (e.g., hardcode the correct value to see if it passes).
 
 ### Phase 3.5: Root Cause Confidence Report (MANDATORY CHECKPOINT)
