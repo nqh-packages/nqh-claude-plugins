@@ -6,6 +6,7 @@ React Native development fundamentals: testing, SDK migration, and configuration
 ```
 dev-fundamentals-react-native (addon)
 ├── agents/
+│   ├── react-native-pro            # Executor agent for RN development
 │   └── react-native-test-pro       # Expert React Native test writer
 └── skills/
     ├── migrating-expo-sdk/         # SDK upgrades, React 19, New Architecture
@@ -28,9 +29,27 @@ dev-fundamentals-react-native (addon)
 /plugin install dev-fundamentals-react-native@nqh-plugins
 ```
 
-## Agent
+## Agents
 
-**react-native-test-pro** - Expert React Native test writer with LLM-optimized JSON output.
+### react-native-pro
+
+Executor agent for React Native development with constitutional operating rules.
+
+Features:
+- New Architecture (Fabric, TurboModules, JSI)
+- Expo SDK 54+ managed workflow, EAS Build/Update
+- Cross-platform UI with reanimated and gesture-handler
+- Type-safe navigation (Expo Router, React Navigation 7+)
+- Offline-first with React Query + MMKV
+- Performance optimization (60fps, bundle size, startup)
+
+Decision Authority:
+- **Auto-execute**: Component extraction, navigation patterns, state management, performance optimizations, platform styling
+- **STOP and escalate**: Architecture choices, custom native modules, offline sync strategy, breaking changes, third-party SDK integration
+
+### react-native-test-pro
+
+Expert React Native test writer with LLM-optimized JSON output.
 
 Features:
 - Jest (90% market share in RN ecosystem)
@@ -76,5 +95,6 @@ Covers:
 
 ---
 
+**v0.3.0** · Added `react-native-pro` executor agent
 **v0.2.0** · Added `migrating-expo-sdk` and `configuring-expo-apps` skills
 **v0.1.0** · Initial release with `react-native-test-pro` agent

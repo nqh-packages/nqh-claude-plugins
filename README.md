@@ -64,6 +64,7 @@ React Native development fundamentals: testing, SDK migration, and configuration
 ```
 dev-fundamentals-react-native (addon)
 ├── agents/
+│   ├── react-native-pro            # Executor agent for RN development
 │   └── react-native-test-pro       # Expert React Native test writer
 └── skills/
     ├── migrating-expo-sdk/         # SDK upgrades, React 19, New Architecture
