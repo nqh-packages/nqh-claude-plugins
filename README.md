@@ -55,7 +55,7 @@ dev-fundamentals-react (addon)
 
 ### [dev-fundamentals-react-native](./plugins/dev-fundamentals-react-native/)
 
-React Native testing specialist with Jest, Detox, and Maestro.
+React Native development fundamentals: testing, SDK migration, and configuration.
 
 ```
 /plugin install dev-fundamentals-react-native@nqh-plugins
@@ -63,8 +63,11 @@ React Native testing specialist with Jest, Detox, and Maestro.
 
 ```
 dev-fundamentals-react-native (addon)
-└── agents/
-    └── react-native-test-pro    # Expert React Native test writer
+├── agents/
+│   └── react-native-test-pro       # Expert React Native test writer
+└── skills/
+    ├── migrating-expo-sdk/         # SDK upgrades, React 19, New Architecture
+    └── configuring-expo-apps/      # app.config.ts, config plugins, EAS
 ```
 
 ### [dev-fundamentals-swift](./plugins/dev-fundamentals-swift/)
@@ -96,6 +99,19 @@ TypeScript/Node.js testing specialist with Vitest and MSW.
 dev-fundamentals-typescript (addon)
 └── agents/
     └── typescript-test-pro    # Expert TypeScript test writer
+```
+
+### [framer-mcp](./plugins/framer-mcp/)
+
+MCP server for Framer design tool integration.
+
+```
+/plugin install framer-mcp@nqh-plugins
+```
+
+```
+framer-mcp
+└── (in development)
 ```
 
 ### [git-backup](./plugins/git-backup/)
