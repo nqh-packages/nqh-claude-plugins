@@ -1,10 +1,10 @@
-# dev-fundamentals-swift
+# swd
 
 Swift/iOS development toolkit with MCP servers, debugging, testing, and modern patterns.
 
 <!-- VISUAL -->
 ```
-dev-fundamentals-swift (addon)
+swd (addon)
 ├── .mcp.json                    # 4 MCP servers
 ├── skills/
 │   ├── testing-swift-apps       # Swift Testing patterns
@@ -31,7 +31,7 @@ dev-fundamentals-swift (addon)
 
 ```
 /plugin install dev-fundamentals@nqh-plugins
-/plugin install dev-fundamentals-swift@nqh-plugins
+/plugin install swd@nqh-plugins
 ```
 
 ## MCP Servers
@@ -111,5 +111,6 @@ Expert iOS/macOS debugger for crashes, memory, and concurrency issues.
 
 ---
 
+**v0.3.2** · Renamed from `dev-fundamentals-swift` to `swd` to fix MCP tool name length exceeding 64-char API limit
 **v0.3.0** · Added swift-pro agent, MCP servers (apple-docs, ios-simulator, swiftlens, xcodebuild), ios-debugger agent, swift-concurrency/swiftui-patterns/xcode-cloud skills
 **v0.1.0** · Initial release with swift-test-pro agent and testing/logging skills

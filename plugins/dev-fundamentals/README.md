@@ -63,7 +63,7 @@ Install addons for platform-specific testing agents:
 | Addon | Agent | Install |
 |-------|-------|---------|
 | dev-fundamentals-react | react-test-pro | `/plugin install dev-fundamentals-react@nqh-plugins` |
-| dev-fundamentals-swift | swift-test-pro | `/plugin install dev-fundamentals-swift@nqh-plugins` |
+| swd | swift-test-pro | `/plugin install swd@nqh-plugins` |
 | dev-fundamentals-typescript | typescript-test-pro | `/plugin install dev-fundamentals-typescript@nqh-plugins` |
 | dev-fundamentals-react-native | react-native-test-pro | `/plugin install dev-fundamentals-react-native@nqh-plugins` |
 

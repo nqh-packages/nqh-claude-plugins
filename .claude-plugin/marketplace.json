@@ -26,10 +26,10 @@
       "version": "0.1.0"
     },
     {
-      "name": "dev-fundamentals-swift",
-      "source": "./plugins/dev-fundamentals-swift",
-      "description": "Swift/iOS testing specialist with Swift Testing framework and ViewInspector",
-      "version": "0.1.0"
+      "name": "swd",
+      "source": "./plugins/swd",
+      "description": "Swift/iOS development toolkit with MCP servers, debugging, testing, and modern patterns",
+      "version": "0.3.2"
     },
     {
       "name": "dev-fundamentals-react",

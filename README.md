@@ -71,29 +71,6 @@ dev-fundamentals-react-native (addon)
     └── configuring-expo-apps/      # app.config.ts, config plugins, EAS
 ```
 
-### [dev-fundamentals-swift](./plugins/dev-fundamentals-swift/)
-
-Swift/iOS development toolkit with MCP servers, debugging, testing, and modern patterns.
-
-```
-/plugin install dev-fundamentals-swift@nqh-plugins
-```
-
-```
-dev-fundamentals-swift (addon)
-├── .mcp.json                    # 4 MCP servers
-├── skills/
-│   ├── testing-swift-apps       # Swift Testing patterns
-│   ├── logging-swift-apps       # Structured Swift logging
-│   ├── swift-concurrency        # Swift 6 strict concurrency
-│   ├── swiftui-patterns         # iOS 26+ SwiftUI patterns
-│   └── xcode-cloud              # CI/CD workflows
-└── agents/
-    ├── swift-pro                # Expert Swift developer
-    ├── swift-test-pro           # Expert Swift test writer
-    └── ios-debugger             # Crash/memory/concurrency debugger
-```
-
 ### [dev-fundamentals-typescript](./plugins/dev-fundamentals-typescript/)
 
 TypeScript/Node.js testing specialist with Vitest and MSW.
@@ -150,6 +127,29 @@ Intelligently restart, fork, or delegate your Claude Code sessions with beautifu
 ```
 
 ![Demo: typing /session:restart shows green SESSION RESUMED banner, /session:fork shows orange SESSION FORKED banner](./plugins/session/assets/demo.gif)
+
+### [swd](./plugins/swd/)
+
+Swift/iOS development toolkit with MCP servers, debugging, testing, and modern patterns.
+
+```
+/plugin install swd@nqh-plugins
+```
+
+```
+swd (addon)
+├── .mcp.json                    # 4 MCP servers
+├── skills/
+│   ├── testing-swift-apps       # Swift Testing patterns
+│   ├── logging-swift-apps       # Structured Swift logging
+│   ├── swift-concurrency        # Swift 6 strict concurrency
+│   ├── swiftui-patterns         # iOS 26+ SwiftUI patterns
+│   └── xcode-cloud              # CI/CD workflows
+└── agents/
+    ├── swift-pro                # Expert Swift developer
+    ├── swift-test-pro           # Expert Swift test writer
+    └── ios-debugger             # Crash/memory/concurrency debugger
+```
 
 <!-- END AUTO-GENERATED -->
 

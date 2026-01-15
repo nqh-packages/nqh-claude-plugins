@@ -43,6 +43,10 @@ nqh-claude-plugins/
 └── README.md                 # Auto-generated plugin catalog
 ```
 
+## Gotchas
+
+**MCP tool name 64-char limit**: Plugin name + MCP server name + tool name must total ≤64 chars when prefixed as `mcp__plugin_{name}_{server}__{tool}`. Use short plugin names (≤5 chars) for MCP-heavy plugins.
+
 ## Adding a New Plugin
 
 1. Create `plugins/<name>/.claude-plugin/plugin.json`:
