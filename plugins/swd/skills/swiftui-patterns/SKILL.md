@@ -1,7 +1,7 @@
 ---
 name: swiftui-patterns
 description: Modern SwiftUI patterns for iOS 26+/macOS 26+ including Liquid Glass, @Observable, view composition, animations, and preview-driven development. Use when building SwiftUI views, debugging UI issues, or implementing iOS 26 features.
-version: 1.0.0
+version: 1.1.0
 author: nqh
 triggers:
   - swiftui
@@ -89,6 +89,35 @@ struct ChildView: View {
     }
 }
 ```
+
+### View Redraw Optimization (Why @Observable)
+
+`@Observable` only redraws views when properties **actually used in the view body** change.
+
+| Aspect | `ObservableObject` | `@Observable` |
+|--------|-------------------|---------------|
+| Trigger | ANY `@Published` change | Only USED properties |
+| Mechanism | Single `objectWillChange` publisher | Per-property tracking |
+| iOS 26+ | N/A | Skips if new value == old value |
+| Opt-out | Omit `@Published` | `@ObservationIgnored` |
+
+```swift
+// ❌ ObservableObject: View redraws when unusedProperty changes
+class OldViewModel: ObservableObject {
+    @Published var displayedText = "Hello"  // Used in UI
+    @Published var unusedProperty = ""      // NOT used → still triggers redraw!
+}
+
+// ✅ @Observable: View only redraws when displayedText changes
+@Observable
+final class NewModel {
+    var displayedText = "Hello"             // Used in UI → triggers redraw
+    var unusedProperty = ""                 // NOT used → no redraw
+    @ObservationIgnored var cache = ""      // Explicitly ignored
+}
+```
+
+**Why this matters**: In `ObservableObject`, an internal Combine publisher `objectWillChange` fires for EVERY `@Published` change. Views subscribe to this single publisher, causing unnecessary redraws. `@Observable` tracks per-property dependencies, only updating when relevant properties change.
 
 ## Liquid Glass (iOS 26+)
 
@@ -513,11 +542,12 @@ Element needs accessibility?
 
 | Pattern | Problem | Fix |
 |---------|---------|-----|
-| `@ObservableObject` | Legacy, verbose | Use `@Observable` |
+| `@ObservableObject` | Redraws on ANY @Published change | Use `@Observable` |
 | `.onAppear { Task {} }` | Lifecycle issues | Use `.task` modifier |
 | ViewModel for simple views | Over-engineering | Views own @State |
 | Force unwrap in views | Crashes | Use optional binding |
 | Deep view hierarchies | Performance | Extract subviews |
+| Many unused `@Published` | Unnecessary redraws | Audit property usage |
 
 ## File Size Limits
 
@@ -533,3 +563,4 @@ Element needs accessibility?
 - [Apple SwiftUI Documentation](https://developer.apple.com/documentation/swiftui)
 - [WWDC 2024 - What's new in SwiftUI](https://developer.apple.com/videos/play/wwdc2024/10144/)
 - [Axiom iOS Skills](https://github.com/CharlesWiltgen/Axiom)
+- [@Observable vs ObservableObject Performance](https://www.youtube.com/watch?v=observable-vs-observableobject) - View redraw optimization
