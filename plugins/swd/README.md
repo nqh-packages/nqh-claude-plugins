@@ -93,7 +93,7 @@ Expert Swift debugger for crashes, memory, logging, and concurrency issues.
 |-------|----------|-------------|
 | `testing-swift-apps` | maestro, xcuitest, swift test | Swift Testing, Maestro, simctl |
 | `logging-swift-apps` | os_log, swift logging | Structured logging with os_log |
-| `swift-concurrency` | actor, sendable, mainactor | Swift 6 strict concurrency patterns |
+| `swift-concurrency` | actor, sendable, mainactor | Swift 6 concurrency ([AvdLee/Swift-Concurrency-Agent-Skill](https://github.com/AvdLee/Swift-Concurrency-Agent-Skill)) |
 | `swiftui-patterns` | swiftui, liquid glass, observable | iOS 26+ SwiftUI, preview-driven dev |
 | `xcode-cloud` | testflight, ci cd ios | Xcode Cloud workflows, distribution |
 
@@ -106,12 +106,14 @@ Expert Swift debugger for crashes, memory, logging, and concurrency issues.
 - [XcodeBuildMCP](https://github.com/cameroncooke/XcodeBuildMCP)
 
 ### Patterns
-- [Swift 6.2 Approachable Concurrency](https://www.avanderlee.com/concurrency/approachable-concurrency-in-swift-6-2-a-clear-guide/)
+- [Swift Concurrency Agent Skill (AvdLee)](https://github.com/AvdLee/Swift-Concurrency-Agent-Skill) - Complete concurrency patterns
+- [Swift Concurrency Course](https://www.swiftconcurrencycourse.com) - In-depth concurrency learning
 - [Axiom iOS Skills](https://github.com/CharlesWiltgen/Axiom)
 - [Apple Xcode Cloud](https://developer.apple.com/documentation/xcode/xcode-cloud)
 
 ---
 
+**v0.6.0** · Major update to swift-concurrency skill with AvdLee's complete agent skill (13 reference files covering async/await, tasks, actors, sendable, testing, migration, and more)
 **v0.5.0** · Renamed ios-debugger → swift-debugger, added logging enforcement to swift-pro checklist, log visibility debugging to swift-debugger, anti-patterns section to logging-swift-apps
 **v0.4.0** · Added comprehensive accessibility patterns to swiftui-patterns skill, accessibility checklists to swift-pro and swift-test-pro agents
 **v0.3.2** · Renamed from `dev-fundamentals-swift` to `swd` to fix MCP tool name length exceeding 64-char API limit
