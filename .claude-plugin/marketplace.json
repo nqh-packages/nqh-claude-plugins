@@ -46,8 +46,8 @@
     {
       "name": "dev-fundamentals-react-native",
       "source": "./plugins/dev-fundamentals-react-native",
-      "description": "React Native testing specialist with Jest, Detox, and Maestro",
-      "version": "0.1.0"
+      "description": "React Native development fundamentals: testing, SDK migration, and configuration",
+      "version": "0.4.0"
     }
   ]
 }

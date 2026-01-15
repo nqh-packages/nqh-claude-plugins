@@ -10,7 +10,8 @@ dev-fundamentals-react-native (addon)
 │   └── react-native-test-pro       # Expert React Native test writer
 └── skills/
     ├── migrating-expo-sdk/         # SDK upgrades, React 19, New Architecture
-    └── configuring-expo-apps/      # app.config.ts, config plugins, EAS
+    ├── configuring-expo-apps/      # app.config.ts, config plugins, EAS
+    └── building-expo-dev-clients/  # EAS builds for physical device testing
 ```
 <!-- /VISUAL -->
 
@@ -93,8 +94,23 @@ Covers:
 - Environment-specific app variants
 - Monorepo configuration (Metro, workspaces)
 
+### building-expo-dev-clients
+
+EAS development builds for testing on physical devices with full native module support.
+
+Triggers: `expo dev client`, `dev client`, `eas build`, `expo go mismatch`, `worklets mismatch`, `physical device`, `push notifications testing`
+
+Covers:
+- Prerequisites (EAS CLI, expo-dev-client)
+- eas.json development profiles (physical vs simulator)
+- Build commands for iOS/Android
+- Device installation (QR code, TestFlight, APK)
+- Metro connection (dev-client mode, tunnel)
+- Common issues (worklets mismatch, provisioning, network)
+
 ---
 
+**v0.4.0** · Added `building-expo-dev-clients` skill
 **v0.3.0** · Added `react-native-pro` executor agent
 **v0.2.0** · Added `migrating-expo-sdk` and `configuring-expo-apps` skills
 **v0.1.0** · Initial release with `react-native-test-pro` agent

@@ -68,7 +68,8 @@ dev-fundamentals-react-native (addon)
 │   └── react-native-test-pro       # Expert React Native test writer
 └── skills/
     ├── migrating-expo-sdk/         # SDK upgrades, React 19, New Architecture
-    └── configuring-expo-apps/      # app.config.ts, config plugins, EAS
+    ├── configuring-expo-apps/      # app.config.ts, config plugins, EAS
+    └── building-expo-dev-clients/  # EAS builds for physical device testing
 ```
 
 ### [dev-fundamentals-typescript](./plugins/dev-fundamentals-typescript/)
