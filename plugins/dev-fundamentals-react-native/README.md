@@ -1,116 +1,42 @@
 # dev-fundamentals-react-native
 
-React Native development fundamentals: testing, SDK migration, and configuration.
+Testing, SDK migration, NativeWind, and Expo configuration.
 
 <!-- VISUAL -->
 ```
-dev-fundamentals-react-native (addon)
-├── agents/
-│   ├── react-native-pro            # Executor agent for RN development
-│   └── react-native-test-pro       # Expert React Native test writer
-└── skills/
-    ├── migrating-expo-sdk/         # SDK upgrades, React 19, New Architecture
-    ├── configuring-expo-apps/      # app.config.ts, config plugins, EAS
-    └── building-expo-dev-clients/  # EAS builds for physical device testing
+skills: migrating-expo-sdk, configuring-expo-apps, building-expo-dev-clients, migrating-nativewind-v5
+agents: react-native-pro, react-native-test-pro
 ```
 <!-- /VISUAL -->
 
-**Requirements**: `dev-fundamentals@nqh-plugins` (core plugin with shared skills)
+**Requires**: `dev-fundamentals@nqh-plugins`
 
-## Add Marketplace
-
-```
-/plugin marketplace add nqh-packages/nqh-claude-plugins
-```
-
-## Add Plugin
+## Install
 
 ```
-/plugin install dev-fundamentals@nqh-plugins
 /plugin install dev-fundamentals-react-native@nqh-plugins
 ```
 
-## Agents
-
-### react-native-pro
-
-Executor agent for React Native development with constitutional operating rules.
-
-Features:
-- New Architecture (Fabric, TurboModules, JSI)
-- Expo SDK 54+ managed workflow, EAS Build/Update
-- Cross-platform UI with reanimated and gesture-handler
-- Type-safe navigation (Expo Router, React Navigation 7+)
-- Offline-first with React Query + MMKV
-- Performance optimization (60fps, bundle size, startup)
-
-Decision Authority:
-- **Auto-execute**: Component extraction, navigation patterns, state management, performance optimizations, platform styling
-- **STOP and escalate**: Architecture choices, custom native modules, offline sync strategy, breaking changes, third-party SDK integration
-
-### react-native-test-pro
-
-Expert React Native test writer with LLM-optimized JSON output.
-
-Features:
-- Jest (90% market share in RN ecosystem)
-- React Native Testing Library
-- Detox for gray-box E2E testing (simulator)
-- Maestro for black-box E2E testing (real devices)
-- New Architecture support (React Native 0.76+)
-- TurboModules mocking patterns
-- Platform-specific testing (iOS + Android)
-- 85%+ coverage targets
-
-Uses skills from core: `tdd-methodology`, `testing-systematically`, `determining-test-truth`, `waiting-for-conditions`, `writing-typescript-logs`
-
 ## Skills
 
-### migrating-expo-sdk
+| Skill | Triggers |
+|-------|----------|
+| `migrating-expo-sdk` | SDK upgrade, RN 0.76, New Architecture, React 19 |
+| `configuring-expo-apps` | app.config.ts, EAS, config plugins |
+| `building-expo-dev-clients` | dev client, Expo Go mismatch |
+| `migrating-nativewind-v5` | NativeWind v5, Tailwind v4 RN |
 
-SDK version upgrades, React 19 breaking changes, New Architecture migration.
+## Agents
 
-Triggers: `expo upgrade`, `migrate sdk`, `react native 0.76`, `new architecture migration`, `react 19 breaking`, `fabric component`, `turbo modules`
-
-Covers:
-- SDK upgrade process (incremental, one version at a time)
-- React Native 0.76+ breaking changes (New Architecture default, CLI changes)
-- React 19 breaking changes (forwardRef deprecated, ref as prop, Context simplification)
-- Common migration issues ("Fabric component not found", Metro logging)
-- Migration checklist and rollback strategy
-
-### configuring-expo-apps
-
-Deep Expo configuration: app.config.ts patterns, config plugins, environment management.
-
-Triggers: `app.config`, `eas.json`, `config plugin`, `expo environment`, `expo prebuild`, `development build`
-
-Covers:
-- TypeScript app.config.ts patterns
-- Dynamic configuration with environment variables
-- Creating custom config plugins (withInfoPlist, withAndroidManifest)
-- EAS Build profiles (development, staging, production)
-- EAS Secrets management
-- Environment-specific app variants
-- Monorepo configuration (Metro, workspaces)
-
-### building-expo-dev-clients
-
-EAS development builds for testing on physical devices with full native module support.
-
-Triggers: `expo dev client`, `dev client`, `eas build`, `expo go mismatch`, `worklets mismatch`, `physical device`, `push notifications testing`
-
-Covers:
-- Prerequisites (EAS CLI, expo-dev-client)
-- eas.json development profiles (physical vs simulator)
-- Build commands for iOS/Android
-- Device installation (QR code, TestFlight, APK)
-- Metro connection (dev-client mode, tunnel)
-- Common issues (worklets mismatch, provisioning, network)
+| Agent | Stack |
+|-------|-------|
+| `react-native-pro` | Expo SDK 54+, New Architecture, Reanimated |
+| `react-native-test-pro` | Jest, RNTL, Detox, Maestro, 85% coverage |
 
 ---
 
-**v0.4.0** · Added `building-expo-dev-clients` skill
-**v0.3.0** · Added `react-native-pro` executor agent
-**v0.2.0** · Added `migrating-expo-sdk` and `configuring-expo-apps` skills
-**v0.1.0** · Initial release with `react-native-test-pro` agent
+**v0.5.0** · Add migrating-nativewind-v5 skill (moved from nqh)
+**v0.4.0** · Add building-expo-dev-clients skill
+**v0.3.0** · Add react-native-pro executor agent
+**v0.2.0** · Add migrating-expo-sdk, configuring-expo-apps skills
+**v0.1.0** · Initial release

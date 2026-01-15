@@ -1,0 +1,18 @@
+# Skill activation rules for migrating-nativewind-v5
+type: domain
+priority: medium
+
+promptTriggers:
+  keywords:
+    - "nativewind v5"
+    - "nativewind 5"
+    - "upgrade nativewind"
+    - "tailwind v4 react native"
+    - "tailwind 4 react native"
+    - "migrate nativewind"
+
+fileTriggers:
+  pathPatterns:
+    - "**/nativewind.config.{js,ts}"
+    - "**/tailwind.config.{js,ts}"
+  # Only when combined with React Native indicators

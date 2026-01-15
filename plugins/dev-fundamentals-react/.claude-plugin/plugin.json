@@ -1,5 +1,5 @@
 {
   "name": "dev-fundamentals-react",
-  "version": "0.1.0",
-  "description": "React testing specialist with Vitest, React Testing Library, and Playwright"
+  "version": "0.3.0",
+  "description": "React development fundamentals: TanStack Start, shadcn/ui, implementation standards, and testing"
 }

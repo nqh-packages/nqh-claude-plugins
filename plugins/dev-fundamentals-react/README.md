@@ -1,45 +1,39 @@
 # dev-fundamentals-react
 
-React testing specialist with Vitest, React Testing Library, MSW, and Playwright.
+TanStack Start, shadcn/ui, implementation standards, and testing.
 
 <!-- VISUAL -->
 ```
-dev-fundamentals-react (addon)
-└── agents/
-    └── react-test-pro    # Expert React test writer
+skills: building-tanstack-apps, writing-shadcn-components, writing-react-components
+agents: react-pro, react-test-pro
 ```
 <!-- /VISUAL -->
 
-**Requirements**: `dev-fundamentals@nqh-plugins` (core plugin with shared skills)
+**Requires**: `dev-fundamentals@nqh-plugins`
 
-## Add Marketplace
-
-```
-/plugin marketplace add nqh-packages/nqh-claude-plugins
-```
-
-## Add Plugin
+## Install
 
 ```
-/plugin install dev-fundamentals@nqh-plugins
 /plugin install dev-fundamentals-react@nqh-plugins
 ```
 
-## Agent
+## Skills
 
-**react-test-pro** - Expert React test writer with LLM-optimized JSON output.
+| Skill | Purpose | Files |
+|-------|---------|-------|
+| `building-tanstack-apps` | TanStack Start (SSR, server functions, Cloudflare) | 21 refs + 22 rules |
+| `writing-shadcn-components` | shadcn/ui patterns, MCP discovery, CVA | 4 |
+| `writing-react-components` | ibelick standards (animation, typography, layout) | 1 |
 
-Features:
-- Vitest 4.0+ (ESM-native)
-- React Testing Library for component testing
-- MSW 2.0+ as single source of truth for API mocking
-- Playwright for E2E testing
-- Behavior-focused testing (not implementation details)
-- `userEvent` over `fireEvent`
-- 85%+ coverage targets
+## Agents
 
-Uses skills from core: `tdd-methodology`, `testing-systematically`, `determining-test-truth`, `waiting-for-conditions`, `writing-typescript-logs`
+| Agent | Stack |
+|-------|-------|
+| `react-pro` | All skills, TanStack, shadcn/ui, Base UI |
+| `react-test-pro` | Vitest, RTL, MSW, Playwright, 85% coverage |
 
 ---
 
+**v0.3.0** · Add building-tanstack-apps, writing-shadcn-components skills (moved from nqh)
+**v0.2.0** · Add writing-react-components skill, react-pro agent
 **v0.1.0** · Initial release

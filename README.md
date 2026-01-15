@@ -41,35 +41,28 @@ dev-fundamentals (core)
 
 ### [dev-fundamentals-react](./plugins/dev-fundamentals-react/)
 
-React testing specialist with Vitest, React Testing Library, MSW, and Playwright.
+TanStack Start, shadcn/ui, implementation standards, and testing.
 
 ```
 /plugin install dev-fundamentals-react@nqh-plugins
 ```
 
 ```
-dev-fundamentals-react (addon)
-└── agents/
-    └── react-test-pro    # Expert React test writer
+skills: building-tanstack-apps, writing-shadcn-components, writing-react-components
+agents: react-pro, react-test-pro
 ```
 
 ### [dev-fundamentals-react-native](./plugins/dev-fundamentals-react-native/)
 
-React Native development fundamentals: testing, SDK migration, and configuration.
+Testing, SDK migration, NativeWind, and Expo configuration.
 
 ```
 /plugin install dev-fundamentals-react-native@nqh-plugins
 ```
 
 ```
-dev-fundamentals-react-native (addon)
-├── agents/
-│   ├── react-native-pro            # Executor agent for RN development
-│   └── react-native-test-pro       # Expert React Native test writer
-└── skills/
-    ├── migrating-expo-sdk/         # SDK upgrades, React 19, New Architecture
-    ├── configuring-expo-apps/      # app.config.ts, config plugins, EAS
-    └── building-expo-dev-clients/  # EAS builds for physical device testing
+skills: migrating-expo-sdk, configuring-expo-apps, building-expo-dev-clients, migrating-nativewind-v5
+agents: react-native-pro, react-native-test-pro
 ```
 
 ### [dev-fundamentals-typescript](./plugins/dev-fundamentals-typescript/)

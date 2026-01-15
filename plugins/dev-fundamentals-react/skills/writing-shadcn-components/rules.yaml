@@ -1,0 +1,25 @@
+type: domain
+priority: medium
+enforcement: block
+triggers:
+- tool: files
+  paths:
+    include:
+    - '**/*/src/components/**/*.tsx'
+    - packages/hui/src/components/**/*.tsx
+    ignore:
+    - '**/*.test.tsx'
+    - '**/*.test.ts'
+    - '**/*.spec.tsx'
+    - '**/*.spec.ts'
+    - '**/tests/**'
+    - '**/__tests__/**'
+    - '**/*.stories.tsx'
+    - '**/*.stories.ts'
+    - '**/examples/**'
+    - '**/demos/**'
+    - '**/playground/**'
+    - '**/*.types.tsx'
+    - '**/*.types.ts'
+    - '**/use-*.tsx'
+    - '**/use-*.ts'

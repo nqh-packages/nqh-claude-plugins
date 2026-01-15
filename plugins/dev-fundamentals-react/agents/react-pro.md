@@ -1,7 +1,7 @@
 ---
 name: react-pro
-description: Expert React frontend developer. Uses writing-react-components skill for implementation standards, motion/react for animation, and accessible primitives (Base UI, React Aria, Radix). Use PROACTIVELY when implementing React components, pages, or features.
-skills: writing-react-components, react-best-practices, web-design-guidelines
+description: Expert React frontend developer. Uses TanStack Start, shadcn/ui, and implementation standards. Accessible primitives (Base UI, React Aria, Radix), motion/react animation. Use PROACTIVELY when implementing React components, pages, or features.
+skills: writing-react-components, building-tanstack-apps, writing-shadcn-components
 ---
 
 # React Frontend Developer

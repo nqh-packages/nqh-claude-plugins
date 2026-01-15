@@ -1,0 +1,18 @@
+type: domain
+priority: critical
+enforcement: block
+triggers:
+- tool: files
+  paths:
+    include:
+    - '**/*/src/routes/**/*.tsx'
+    - '**/routes/**/*.tsx'
+    - '**/app.config.ts'
+  content:
+    include:
+    - (?<!//\s*)loader:.*Promise<
+    - (?<!//\s*)beforeLoad:.*Promise<
+    - \)\s*:\s*Promise<
+    - as\s+any
+    - useLoaderData\(\)!
+    - loaderData\.\w+(?!\?)
