@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Update external skill dependencies before push
+echo "Updating vercel-agent-skills..."
+cd ~/.local/share/vercel-agent-skills && git pull --quiet
