@@ -111,6 +111,7 @@ Expert iOS/macOS debugger for crashes, memory, and concurrency issues.
 
 ---
 
+**v0.4.0** · Added comprehensive accessibility patterns to swiftui-patterns skill, accessibility checklists to swift-pro and swift-test-pro agents
 **v0.3.2** · Renamed from `dev-fundamentals-swift` to `swd` to fix MCP tool name length exceeding 64-char API limit
 **v0.3.0** · Added swift-pro agent, MCP servers (apple-docs, ios-simulator, swiftlens, xcodebuild), ios-debugger agent, swift-concurrency/swiftui-patterns/xcode-cloud skills
 **v0.1.0** · Initial release with swift-test-pro agent and testing/logging skills

@@ -557,6 +557,77 @@ class SpyAuthService: AuthServiceProtocol {
 }
 ```
 
+## Accessibility Testing
+
+### performAccessibilityAudit() (iOS 17+)
+
+```swift
+import XCTest
+
+class AccessibilityTests: XCTestCase {
+    let app = XCUIApplication()
+
+    func testAccessibilityAudit() throws {
+        app.launch()
+
+        // Full audit
+        try app.performAccessibilityAudit()
+
+        // Specific checks
+        try app.performAccessibilityAudit(for: [.contrast, .dynamicType, .hitRegion])
+
+        // Skip known issues
+        try app.performAccessibilityAudit { issue in
+            if issue.element.identifier == "knownLimitation" {
+                return false  // Skip
+            }
+            return true
+        }
+    }
+}
+```
+
+### Audit Types
+
+| Type | Checks |
+|------|--------|
+| `.contrast` | WCAG AA color contrast (4.5:1) |
+| `.dynamicType` | Text scales with user preference |
+| `.hitRegion` | Tap targets ≥44x44pt |
+| `.trait` | Proper accessibility traits |
+| `.all` | All checks (default) |
+
+### Accessibility Identifier Convention
+
+```swift
+// Pattern: {screen}.{element}
+.accessibilityIdentifier("taskCreate.saveButton")
+.accessibilityIdentifier("taskList.addButton")
+.accessibilityIdentifier("settings.darkModeToggle")
+
+// Test usage
+func testSaveButton() throws {
+    let app = XCUIApplication()
+    app.launch()
+
+    let saveButton = app.buttons["taskCreate.saveButton"]
+    XCTAssertTrue(saveButton.exists)
+    XCTAssertEqual(saveButton.label, "Save task")  // VoiceOver label
+
+    // Verify touch target
+    XCTAssertGreaterThanOrEqual(saveButton.frame.width, 44)
+    XCTAssertGreaterThanOrEqual(saveButton.frame.height, 44)
+}
+```
+
+### Known Gotchas
+
+| Issue | Symptom | Solution |
+|-------|---------|----------|
+| Toolbar items invisible | `.toolbar` buttons don't appear in XCUITest queries | Use custom HStack header |
+| Element not found | Accessibility identifier not set | Add `.accessibilityIdentifier()` |
+| Label mismatch | `accessibilityLabel` vs button title | Query by identifier, not label |
+
 ## Checklist
 
 ### TDD Fundamentals
@@ -568,6 +639,13 @@ class SpyAuthService: AuthServiceProtocol {
 - [ ] Coverage ≥85% for business logic
 - [ ] XCUITest only for E2E
 - [ ] Tests written BEFORE implementation (TDD)
+
+### Accessibility Testing
+- [ ] `performAccessibilityAudit()` in UI test suite
+- [ ] Accessibility identifiers use `screen.element` convention
+- [ ] Touch targets verified (≥44x44pt)
+- [ ] VoiceOver labels tested (`element.label`)
+- [ ] Toolbar buttons tested via custom header (not `.toolbar`)
 
 ### LLM-Optimized Output (MANDATORY)
 - [ ] Tests run with `-quiet` flag

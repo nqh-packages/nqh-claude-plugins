@@ -343,6 +343,172 @@ enum Route: Hashable {
 }
 ```
 
+## Accessibility
+
+### Modifier Reference
+
+| Modifier | Purpose | VoiceOver | Use Case |
+|----------|---------|-----------|----------|
+| `.accessibilityLabel()` | Describes element | ✅ Read | All interactive elements |
+| `.accessibilityIdentifier()` | Testing ID | ❌ Not read | XCUITest queries |
+| `.accessibilityValue()` | Dynamic state | ✅ Read | Sliders, toggles, progress |
+| `.accessibilityHint()` | Action context | ✅ Read | Clarifies behavior |
+| `.accessibilityElement(children:)` | Groups elements | ✅ Combined | Related content |
+| `.accessibilityAddTraits()` | Element type | ✅ Announced | `.isButton`, `.isHeader` |
+| `.accessibilitySortPriority()` | Read order | ✅ Affects order | Override default order |
+| `.contentShape()` | Hit area | ❌ N/A | Expand tap target |
+
+### Touch Targets (44x44pt Minimum)
+
+```swift
+// ✅ Proper touch target
+Button { action() } label: {
+    Image(systemName: "plus")
+}
+.frame(minWidth: 44, minHeight: 44)
+.contentShape(Circle())  // REQUIRED for custom shapes
+
+// ❌ Missing contentShape = small hit area
+Button { } label: {
+    Image(systemName: "plus")
+        .frame(width: 56, height: 56)
+        .background(Circle().fill(.blue))
+}
+// Hit area doesn't match visual!
+```
+
+### Accessibility Identifier Convention
+
+```swift
+// Pattern: {screen}.{element}
+.accessibilityIdentifier("taskCreate.saveButton")
+.accessibilityIdentifier("taskList.addButton")
+.accessibilityIdentifier("settings.darkModeToggle")
+```
+
+### VoiceOver Patterns
+
+```swift
+// Label + Hint (most common)
+Button { performAction() } label: {
+    Label("Add", systemImage: "plus")
+}
+.accessibilityLabel("Add item")
+.accessibilityHint("Double-tap to add to your list")
+
+// Dynamic value (sliders, toggles)
+Slider(value: $volume, in: 0...100)
+    .accessibilityLabel("Volume")
+    .accessibilityValue("\(Int(volume)) percent")
+
+// Grouping related content
+VStack {
+    Text("John Doe")
+    Text("john@example.com")
+}
+.accessibilityElement(children: .combine)
+.accessibilityLabel("Contact: John Doe, john@example.com")
+
+// Custom tap gesture (MUST add traits)
+Text("Tap to expand")
+    .onTapGesture { isExpanded.toggle() }
+    .accessibilityAddTraits(.isButton)  // REQUIRED
+    .accessibilityAction(.activate) { isExpanded.toggle() }
+```
+
+### Focus Management
+
+```swift
+struct AlertView: View {
+    @AccessibilityFocusState private var focusedOnDismiss: Bool
+    @State private var showAlert = false
+
+    var body: some View {
+        VStack {
+            if showAlert {
+                VStack {
+                    Text("Alert").accessibilityAddTraits(.isHeader)
+                    Button("Dismiss") {
+                        showAlert = false
+                    }
+                    .accessibilityFocused($focusedOnDismiss)
+                }
+                .onAppear { focusedOnDismiss = true }
+            }
+        }
+    }
+}
+```
+
+### Dynamic Type (@ScaledMetric)
+
+```swift
+struct ScaledView: View {
+    @ScaledMetric(relativeTo: .body) private var spacing: CGFloat = 12
+    @ScaledMetric private var iconSize: CGFloat = 24
+
+    var body: some View {
+        VStack(spacing: spacing) {
+            Image(systemName: "star")
+                .frame(width: iconSize, height: iconSize)
+            Text("Scales with user preference")
+        }
+    }
+}
+```
+
+### Known Gotchas (iOS 26+)
+
+| Issue | Symptom | Workaround |
+|-------|---------|------------|
+| **Toolbar items invisible** | `.toolbar` buttons don't appear in VoiceOver/XCUITest | Use custom HStack header |
+| **Keyboard toolbar hidden** | `.toolbar(placement: .keyboard)` not accessible | Move to `.primaryAction` or overlay |
+| **onTapGesture not announced** | Custom taps not recognized as buttons | Add `.accessibilityAddTraits(.isButton)` |
+| **TextField hit region** | Can't reliably control tap area | Use `.frame(minHeight: 44)` (partial) |
+
+```swift
+// ❌ BROKEN: Toolbar may not be accessible
+.toolbar {
+    ToolbarItem(placement: .primaryAction) {
+        Button("Save") { }  // May not appear in automation
+    }
+}
+
+// ✅ WORKAROUND: Custom header for critical actions
+VStack {
+    HStack {
+        Button("Cancel") { dismiss() }
+            .accessibilityIdentifier("screen.cancelButton")
+        Spacer()
+        Text("Title").font(.headline)
+        Spacer()
+        Button("Save") { save() }
+            .accessibilityIdentifier("screen.saveButton")
+    }
+    .padding()
+
+    // Content...
+}
+.navigationBarHidden(true)
+```
+
+### Decision Tree
+
+```
+Element needs accessibility?
+├── Interactive (button, field)?
+│   ├── YES → .accessibilityLabel() for VoiceOver
+│   └── For testing? → .accessibilityIdentifier("screen.element")
+├── Dynamic state (slider, toggle)?
+│   └── YES → .accessibilityValue()
+├── Custom gesture (onTapGesture)?
+│   └── YES → .accessibilityAddTraits(.isButton)
+├── Group of related elements?
+│   └── YES → .accessibilityElement(children: .combine)
+└── Custom shape button?
+    └── YES → .contentShape() + .frame(minWidth: 44, minHeight: 44)
+```
+
 ## Anti-Patterns
 
 | Pattern | Problem | Fix |

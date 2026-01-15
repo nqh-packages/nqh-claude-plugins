@@ -376,3 +376,10 @@ Before completing:
 - [ ] File sizes under 350 LOC
 - [ ] File:line evidence provided
 - [ ] Project rules followed
+
+### Accessibility (REQUIRED for UI)
+- [ ] Interactive elements have `.accessibilityLabel()`
+- [ ] Testing elements have `.accessibilityIdentifier("screen.element")`
+- [ ] Touch targets ≥44x44pt with `.contentShape()` for custom shapes
+- [ ] Custom tap gestures have `.accessibilityAddTraits(.isButton)`
+- [ ] Avoid `.toolbar` for critical actions (use custom header if needed)
