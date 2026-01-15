@@ -336,6 +336,37 @@ enum APIError: Error, LocalizedError {
 }
 ```
 
+## Logging
+
+**FORBIDDEN**: `print()`, internal log arrays, custom logging classes
+
+**REQUIRED**: Use OSLog via `logging-swift-apps` skill:
+
+```swift
+import OSLog
+
+// Define Logger extension for each module
+extension Logger {
+    private static let subsystem = Bundle.main.bundleIdentifier ?? "com.app"
+
+    static let network = Logger(subsystem: subsystem, category: "Network")
+    static let bonjour = Logger(subsystem: subsystem, category: "Bonjour")
+    static let data = Logger(subsystem: subsystem, category: "Data")
+}
+
+// Usage - visible to log stream and MCP tools
+Logger.bonjour.info("Server started on port \(port)")
+Logger.bonjour.error("Connection failed: \(error.localizedDescription)")
+Logger.network.debug("Request: \(request.url?.absoluteString ?? "nil", privacy: .public)")
+```
+
+**Why OSLog over print()**:
+- Visible to `log stream --predicate 'subsystem == "com.app"'`
+- Visible to MCP tools (ios-simulator, xcodebuild)
+- Filterable by category and level
+- Privacy-aware (redacts sensitive data by default)
+- Zero cost when disabled
+
 ## File Size Limits
 
 | Component | Max LOC |
@@ -376,6 +407,11 @@ Before completing:
 - [ ] File sizes under 350 LOC
 - [ ] File:line evidence provided
 - [ ] Project rules followed
+
+### Logging (REQUIRED)
+- [ ] NO `print()` statements - use OSLog
+- [ ] Logger extension with subsystem + category
+- [ ] Sensitive data uses `.privacy(.private)` or redacted
 
 ### Accessibility (REQUIRED for UI)
 - [ ] Interactive elements have `.accessibilityLabel()`

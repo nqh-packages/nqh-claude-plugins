@@ -29,7 +29,7 @@
       "name": "swd",
       "source": "./plugins/swd",
       "description": "Swift/iOS development toolkit with MCP servers, debugging, testing, and modern patterns",
-      "version": "0.4.0"
+      "version": "0.5.0"
     },
     {
       "name": "dev-fundamentals-react",

@@ -15,7 +15,7 @@ swd (addon)
 └── agents/
     ├── swift-pro                # Expert Swift developer
     ├── swift-test-pro           # Expert Swift test writer
-    └── ios-debugger             # Crash/memory/concurrency debugger
+    └── swift-debugger           # Crash/memory/logging debugger
 ```
 <!-- /VISUAL -->
 
@@ -76,12 +76,13 @@ Expert Swift/iOS test writer with LLM-optimized JSON output.
 - Tests `@Observable` models directly (no ViewModels)
 - 85%+ coverage targets for business logic
 
-### ios-debugger
+### swift-debugger
 
-Expert iOS/macOS debugger for crashes, memory, and concurrency issues.
+Expert Swift debugger for crashes, memory, logging, and concurrency issues.
 
 - Crash analysis (EXC_BAD_ACCESS, SIGSEGV)
 - Memory leak detection with Instruments
+- **Log visibility debugging** (print() → OSLog migration)
 - Swift 6 concurrency debugging (data races, actor issues)
 - LLDB command patterns
 - Systematic 4-phase debugging methodology
@@ -111,6 +112,7 @@ Expert iOS/macOS debugger for crashes, memory, and concurrency issues.
 
 ---
 
+**v0.5.0** · Renamed ios-debugger → swift-debugger, added logging enforcement to swift-pro checklist, log visibility debugging to swift-debugger, anti-patterns section to logging-swift-apps
 **v0.4.0** · Added comprehensive accessibility patterns to swiftui-patterns skill, accessibility checklists to swift-pro and swift-test-pro agents
 **v0.3.2** · Renamed from `dev-fundamentals-swift` to `swd` to fix MCP tool name length exceeding 64-char API limit
 **v0.3.0** · Added swift-pro agent, MCP servers (apple-docs, ios-simulator, swiftlens, xcodebuild), ios-debugger agent, swift-concurrency/swiftui-patterns/xcode-cloud skills

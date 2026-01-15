@@ -446,6 +446,36 @@ When reviewing Swift code, verify:
 
 ---
 
+## Anti-Patterns (FORBIDDEN)
+
+| Pattern | Problem | Fix |
+|---------|---------|-----|
+| `print()` | Invisible to log stream, MCP tools, crash correlation | Use `Logger.category.level()` |
+| Internal log array | Memory leak, not queryable, lost on crash | Use OSLog (persisted by system) |
+| Custom Logger class | Reinventing wheel, missing system integration | Use native `os.Logger` |
+| `NSLog()` | Legacy, no privacy, no categories | Use `os.Logger` |
+| String building in message | Evaluated even when log disabled | Use OSLog string interpolation |
+| No correlation ID | Can't trace operation across logs | Add `[opID]` prefix |
+| Generic category | Can't filter by component | Use hierarchical categories |
+
+### Detection Commands
+
+```bash
+# Find print() usage (SHOULD BE ZERO)
+grep -r "print(" . --include="*.swift" | grep -v "// " | wc -l
+
+# Find internal log arrays (SHOULD BE ZERO)
+grep -rE "logs\.append|logMessages|logEntries|\[String\]\(\)" . --include="*.swift"
+
+# Find NSLog usage (SHOULD BE ZERO)
+grep -r "NSLog(" . --include="*.swift"
+
+# Verify Logger extension exists
+grep -r "extension Logger" . --include="*.swift"
+```
+
+---
+
 ## Related Skills
 
 - `testing-swift-apps` - Simulator control

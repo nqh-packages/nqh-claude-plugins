@@ -148,7 +148,7 @@ swd (addon)
 └── agents/
     ├── swift-pro                # Expert Swift developer
     ├── swift-test-pro           # Expert Swift test writer
-    └── ios-debugger             # Crash/memory/concurrency debugger
+    └── swift-debugger           # Crash/memory/logging debugger
 ```
 
 <!-- END AUTO-GENERATED -->
