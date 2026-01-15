@@ -73,7 +73,7 @@ dev-fundamentals-react-native (addon)
 
 ### [dev-fundamentals-swift](./plugins/dev-fundamentals-swift/)
 
-Swift/iOS testing specialist with Swift Testing framework, ViewInspector, and XCUITest.
+Swift/iOS development toolkit with MCP servers, debugging, testing, and modern patterns.
 
 ```
 /plugin install dev-fundamentals-swift@nqh-plugins
@@ -81,11 +81,17 @@ Swift/iOS testing specialist with Swift Testing framework, ViewInspector, and XC
 
 ```
 dev-fundamentals-swift (addon)
+├── .mcp.json                    # 4 MCP servers
 ├── skills/
-│   ├── testing-swift-apps     # Swift Testing patterns
-│   └── logging-swift-apps     # Structured Swift logging
+│   ├── testing-swift-apps       # Swift Testing patterns
+│   ├── logging-swift-apps       # Structured Swift logging
+│   ├── swift-concurrency        # Swift 6 strict concurrency
+│   ├── swiftui-patterns         # iOS 26+ SwiftUI patterns
+│   └── xcode-cloud              # CI/CD workflows
 └── agents/
-    └── swift-test-pro         # Expert Swift test writer
+    ├── swift-pro                # Expert Swift developer
+    ├── swift-test-pro           # Expert Swift test writer
+    └── ios-debugger             # Crash/memory/concurrency debugger
 ```
 
 ### [dev-fundamentals-typescript](./plugins/dev-fundamentals-typescript/)

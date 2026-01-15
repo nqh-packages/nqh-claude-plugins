@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "apple-docs": {
+      "command": "npx",
+      "args": ["-y", "@kimsungwhee/apple-docs-mcp@latest"],
+      "env": {
+        "USER_AGENT_ROTATION_ENABLED": "true"
+      }
+    },
+    "ios-simulator": {
+      "command": "npx",
+      "args": ["-y", "ios-simulator-mcp"]
+    },
+    "swiftlens": {
+      "command": "uvx",
+      "args": ["swiftlens"]
+    },
+    "xcodebuild": {
+      "command": "npx",
+      "args": ["-y", "xcodebuildmcp@latest"]
+    }
+  }
+}
