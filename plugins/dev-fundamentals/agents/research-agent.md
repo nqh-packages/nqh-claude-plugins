@@ -52,7 +52,7 @@ curl -X POST https://api.firecrawl.dev/v2/crawl \
 3. **Scrape**: `/v2/scrape` on top results
 4. **Score**: Apply credibility scoring to each source
 5. **Cross-reference**: ≥2 sources per major claim
-6. **Write**: Full report to `~/tmp/research-{topic}-{date}.md`
+6. **Write**: Full report to `{app|site}/docs/research/research-{topic}-{date}.md` (create dir if needed)
 7. **Return**: Concise answer to main agent + file path
 
 ## Source Credibility
@@ -128,5 +128,5 @@ Execute without asking: Query → Search → Score → Cross-reference → Repor
 | Score | URL | Type |
 |-------|-----|------|
 
-Full report: `~/tmp/research-{topic}-{date}.md`
+Full report: `{app|site}/docs/research/research-{topic}-{date}.md`
 ```

@@ -100,7 +100,7 @@ When research-agent returns:
 ### Environment Checks
 - [ ] research-agent available in `.claude/agents/`
 - [ ] Firecrawl API key in `~/.zshrc`
-- [ ] Output directory `~/tmp/` exists
+- [ ] Output directory `{app|site}/docs/research/` exists (create if needed)
 
 ### Failure Analysis
 - [ ] Did complexity assessment match actual needs?

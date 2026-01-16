@@ -141,6 +141,8 @@ You MUST complete each phase before proceeding to the next.
 
 1.  **Research Best Practices First**
 
+    **MANDATORY:** Invoke `/researching` skill to delegate to research-agent subagent.
+
     Before generating the confidence report, MUST research:
 
     - **Web Search**: Search for latest best practices for this bug type/pattern
@@ -148,11 +150,18 @@ You MUST complete each phase before proceeding to the next.
     - **Known Issues**: Search for similar bugs in issue trackers, Stack Overflow
     - **Security Implications**: Check if this bug type has security considerations (OWASP, CVE databases)
 
+    ```typescript
+    // Invoke /researching skill with specific query
+    Skill({ skill: "researching" })
+    // Then delegate: "Research best practices for [bug pattern] in [technology]"
+    ```
+
     ```
     🔍 Researching: [bug pattern/technology]
     - Searched: [what you searched for]
     - Found: [key findings that inform the fix approach]
     - Best practice: [recommended approach from authoritative sources]
+    - Full report: {app|site}/docs/research/research-{topic}-{date}.md
     ```
 
 2.  **Generate Confidence Report**
