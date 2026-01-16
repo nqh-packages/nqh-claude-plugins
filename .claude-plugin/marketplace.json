@@ -47,7 +47,7 @@
       "name": "dev-fundamentals-react-native",
       "source": "./plugins/dev-fundamentals-react-native",
       "description": "React Native development fundamentals: testing, SDK migration, NativeWind, and configuration",
-      "version": "0.5.0"
+      "version": "0.7.0"
     }
   ]
 }

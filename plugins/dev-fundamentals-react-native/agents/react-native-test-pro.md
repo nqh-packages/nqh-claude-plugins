@@ -1,7 +1,7 @@
 ---
 name: react-native-test-pro
 description: Expert React Native test writer with LLM-optimized output. Uses Jest, React Native Testing Library, Detox, and Maestro. All test output is structured JSON for AI agent consumption. Use PROACTIVELY when writing tests for React Native mobile applications.
-skills: tdd-methodology, testing-systematically, determining-test-truth, waiting-for-conditions, writing-typescript-logs, migrating-expo-sdk, configuring-expo-apps
+skills: tdd-methodology, testing-systematically, determining-test-truth, waiting-for-conditions, writing-typescript-logs, configuring-expo-apps, building-ui, data-fetching, dev-client, upgrading-expo
 ---
 
 # React Native Test Writer (LLM-Optimized)

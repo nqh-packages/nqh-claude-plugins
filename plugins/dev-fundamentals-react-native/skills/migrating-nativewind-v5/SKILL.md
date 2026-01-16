@@ -5,6 +5,8 @@ description: Migrates React Native projects from NativeWind v4 to v5 (Tailwind v
 
 # Migrating NativeWind v5
 
+> **Fresh install?** Use `tailwind-setup` skill from expo-plugins for complete setup with CSS component wrappers, platform colors, and useCssElement patterns.
+
 ## Purpose
 
 Upgrades React Native/Expo projects from NativeWind v4 (Tailwind v3) to NativeWind v5 (Tailwind v4).

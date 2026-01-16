@@ -217,6 +217,18 @@ skills: testing-systematically, tdd-methodology
 
 **Tested:** 2025-01-05 - Verified that `test-addon-agent` in `test-plugin-addon` successfully loaded `test-core-skill` from `test-plugin-core`.
 
+## External Plugin Cache
+
+Other marketplaces' plugins cached at `~/.claude/plugins/cache/<marketplace>/<plugin>/<version>/`
+
+```bash
+# Find skills/MCP from other plugins
+find ~/.claude/plugins/cache -name "SKILL.md" -type f
+find ~/.claude/plugins/cache -name "mcp.json" -type f
+```
+
+**Source of truth**: When our skills overlap with official plugins (e.g., `expo-plugins`), delete ours and reference theirs via `skills:` frontmatter.
+
 ## Conventions
 
 | Pattern | Purpose |

@@ -54,15 +54,16 @@ agents: react-pro, react-test-pro
 
 ### [dev-fundamentals-react-native](./plugins/dev-fundamentals-react-native/)
 
-Testing, SDK migration, NativeWind, and Expo configuration.
+React Native testing, NativeWind migration, and Expo configuration. Integrates with official `expo-plugins` for SDK upgrades and dev clients.
 
 ```
 /plugin install dev-fundamentals-react-native@nqh-plugins
 ```
 
 ```
-skills: migrating-expo-sdk, configuring-expo-apps, building-expo-dev-clients, migrating-nativewind-v5
+skills: configuring-expo-apps, migrating-nativewind-v5
 agents: react-native-pro, react-native-test-pro
+expo-plugins: upgrading-expo, dev-client, building-ui, tailwind-setup, data-fetching, api-routes, deployment
 ```
 
 ### [dev-fundamentals-typescript](./plugins/dev-fundamentals-typescript/)
