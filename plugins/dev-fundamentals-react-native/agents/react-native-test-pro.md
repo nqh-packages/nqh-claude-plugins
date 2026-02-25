@@ -56,19 +56,20 @@ module.exports = {
 };
 ```
 
-### Test Naming Convention (Machine-Parseable)
+### Test Naming Convention
+
+See `rules/shared/quality-gates/test-naming.md` for the full convention.
 
 ```typescript
-// Pattern: TEST_{DOMAIN}_{SEQ}: {behavior}
 describe('GroceryList', () => {
-  it('TEST_LIST_001: adds item when user submits', () => { });
-  it('TEST_LIST_002: clears input after adding', () => { });
-  it('TEST_LIST_003: removes item on swipe delete', () => { });
+  it('adds item when user submits', () => { });
+  it('clears input after adding', () => { });
+  it('removes item on swipe delete', () => { });
 });
 
 describe('Navigation', () => {
-  it('TEST_NAV_001: navigates from Home to Details', () => { });
-  it('TEST_NAV_002: shows back button on detail screen', () => { });
+  it('navigates from Home to Details', () => { });
+  it('shows back button on detail screen', () => { });
 });
 ```
 
@@ -411,7 +412,7 @@ module.exports = {
 | Missing waitFor | Race conditions | Always await async |
 | **Pretty reporters** | LLMs can't parse ANSI | JSON reporter only |
 | **console.log in tests** | Noise in JSON output | Use `silent: true` |
-| **Vague test names** | LLM can't identify test | Use `TEST_{DOMAIN}_{SEQ}:` prefix |
+| **Vague test names** | LLM can't identify test | Behavior-descriptive names (see test-naming rule) |
 | **Maestro screenshots** | Binary data for LLM | Use `--format json` only |
 
 ## Test File Organization
@@ -460,7 +461,7 @@ mocks/
 - [ ] Jest JSON reporter configured
 - [ ] Output file specified (`--outputFile=results.json`)
 - [ ] Silent mode enabled (`silent: true`)
-- [ ] Test names use `TEST_{DOMAIN}_{SEQ}:` prefix
+- [ ] Test names are behavior-descriptive (see quality-gates/test-naming)
 - [ ] Detox uses JSON reporter
 - [ ] Maestro runs with `--format json`
 - [ ] No `console.log` in test files

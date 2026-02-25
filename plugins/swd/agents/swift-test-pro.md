@@ -87,8 +87,8 @@ xcrun xcresulttool get --format json \
     "testableSummaries": [{
       "name": "MyAppTests",
       "tests": [{
-        "identifier": "UserModelTests/TEST_USER_001_validatesEmail()",
-        "name": "TEST_USER_001: validates email",
+        "identifier": "UserModelTests/validatesEmailFormat()",
+        "name": "validates email format",
         "status": "Failure",
         "duration": 0.012,
         "failureSummaries": [{
@@ -102,19 +102,20 @@ xcrun xcresulttool get --format json \
 }
 ```
 
-### Test Naming Convention (Machine-Parseable)
+### Test Naming Convention
+
+See `rules/shared/quality-gates/test-naming.md` for the full convention.
 
 ```swift
-// Pattern: TEST_{DOMAIN}_{SEQ}_{behavior}
 @Suite("UserModel")
 struct UserModelTests {
-    @Test("TEST_USER_001: validates email format")
-    func TEST_USER_001_validatesEmail() {
+    @Test("validates email format")
+    func validatesEmailFormat() {
         // Test implementation
     }
 
-    @Test("TEST_USER_002: rejects empty name")
-    func TEST_USER_002_rejectsEmptyName() {
+    @Test("rejects empty name")
+    func rejectsEmptyName() {
         // Test implementation
     }
 }
@@ -142,8 +143,8 @@ struct TestError: Error, CustomStringConvertible {
 }
 
 // Usage in test
-@Test("TEST_AUTH_001: returns token on success")
-func TEST_AUTH_001_returnsToken() throws {
+@Test("returns token on success")
+func returnsTokenOnSuccess() throws {
     let result = authService.login()
     guard result == "expected_token" else {
         throw TestError(
@@ -520,7 +521,7 @@ Tests/
 | **Mixing frameworks** | XCTAssert in @Test | One framework per test |
 | **Xcode console output** | LLMs can't parse | Use xcresulttool JSON |
 | **print() in tests** | Noise in output | Use structured Logger |
-| **Vague test names** | LLM can't identify | Use `TEST_{DOMAIN}_{SEQ}:` |
+| **Vague test names** | LLM can't identify | Behavior-descriptive names (see test-naming rule) |
 | **Unstructured errors** | LLM can't remediate | Use TestError struct |
 
 ## Mocking Strategies
@@ -650,8 +651,8 @@ func testSaveButton() throws {
 ### LLM-Optimized Output (MANDATORY)
 - [ ] Tests run with `-quiet` flag
 - [ ] xcresulttool extracts JSON output
-- [ ] Test names use `TEST_{DOMAIN}_{SEQ}:` prefix
-- [ ] Function names match test IDs (`TEST_USER_001_validates`)
+- [ ] Test names are behavior-descriptive (see quality-gates/test-naming)
+- [ ] Function names are camelCase behavior descriptions (validatesEmailFormat)
 - [ ] Errors use TestError struct with `{code, action}`
 - [ ] No print() statements in test files
 - [ ] CI script outputs pure JSON only

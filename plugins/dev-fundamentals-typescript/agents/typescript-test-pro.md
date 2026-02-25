@@ -68,7 +68,7 @@ export default defineConfig({
       "assertionResults": [
         {
           "ancestorTitles": ["UserService", "findById"],
-          "title": "TEST_USER_001: returns user when found",
+          "title": "returns user when found",
           "status": "failed",
           "failureMessages": [{
             "code": "ASSERT_EQUAL_001",
@@ -85,15 +85,16 @@ export default defineConfig({
 }
 ```
 
-### Test Naming Convention (Machine-Parseable)
+### Test Naming Convention
+
+See `rules/shared/quality-gates/test-naming.md` for the full convention.
 
 ```typescript
-// Pattern: TEST_{DOMAIN}_{SEQ}: {behavior}
 describe('UserService', () => {
   describe('findById', () => {
-    it('TEST_USER_001: returns user when found', async () => { });
-    it('TEST_USER_002: throws NOT_FOUND when missing', async () => { });
-    it('TEST_USER_003: caches result for 60s', async () => { });
+    it('returns user when found', async () => { });
+    it('throws NOT_FOUND when missing', async () => { });
+    it('caches result for 60s', async () => { });
   });
 });
 ```
@@ -149,7 +150,7 @@ const LLMReporter: Reporter = {
     const results = files.map(file => ({
       file: file.filepath,
       tests: file.tasks.map(task => ({
-        id: extractTestId(task.name),  // TEST_USER_001
+        id: extractTestId(task.name),
         name: task.name,
         status: task.result?.state ?? 'skipped',
         duration_ms: task.result?.duration ?? 0,
@@ -686,7 +687,7 @@ export default defineConfig({
 | **Hardcoded test data** | Duplication | Factory functions |
 | **Pretty reporters** | LLMs can't parse ANSI | JSON reporter only |
 | **console.log in tests** | Noise in JSON output | Use `silent: true` |
-| **Vague test names** | LLM can't identify test | Use `TEST_{DOMAIN}_{SEQ}:` prefix |
+| **Vague test names** | LLM can't identify test | Behavior-descriptive names (see test-naming rule) |
 | **Unstructured errors** | LLM can't remediate | Include `{code, action}` |
 
 ## Test File Organization
@@ -737,7 +738,7 @@ mocks/
 - [ ] JSON reporter configured (`reporters: ['json']`)
 - [ ] Output file specified (`outputFile: './test-results.json'`)
 - [ ] Silent mode enabled (`silent: true`)
-- [ ] Test names use `TEST_{DOMAIN}_{SEQ}:` prefix
+- [ ] Test names are behavior-descriptive (see quality-gates/test-naming)
 - [ ] Errors include `{code, file, line, action}` structure
 - [ ] Coverage reporter is JSON only (no HTML/text)
 - [ ] No `console.log` in test files

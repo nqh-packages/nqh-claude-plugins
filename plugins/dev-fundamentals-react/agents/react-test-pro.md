@@ -49,19 +49,20 @@ export default defineConfig({
 });
 ```
 
-### Test Naming Convention (Machine-Parseable)
+### Test Naming Convention
+
+See `rules/shared/quality-gates/test-naming.md` for the full convention.
 
 ```typescript
-// Pattern: TEST_{DOMAIN}_{SEQ}: {behavior}
 describe('Button', () => {
-  it('TEST_BTN_001: calls onClick when clicked', async () => { });
-  it('TEST_BTN_002: shows loading state when pending', async () => { });
-  it('TEST_BTN_003: disables when form invalid', async () => { });
+  it('calls onClick when clicked', async () => { });
+  it('shows loading state when pending', async () => { });
+  it('disables when form invalid', async () => { });
 });
 
 describe('UserProfile', () => {
-  it('TEST_PROFILE_001: displays user data after loading', async () => { });
-  it('TEST_PROFILE_002: shows error on fetch failure', async () => { });
+  it('displays user data after loading', async () => { });
+  it('shows error on fetch failure', async () => { });
 });
 ```
 
@@ -370,7 +371,7 @@ export default defineConfig({
 | snapshot abuse | Brittle, low value | Assert specific content |
 | **Pretty reporters** | LLMs can't parse ANSI | JSON reporter only |
 | **console.log in tests** | Noise in JSON output | Use `silent: true` |
-| **Vague test names** | LLM can't identify test | Use `TEST_{DOMAIN}_{SEQ}:` prefix |
+| **Vague test names** | LLM can't identify test | Behavior-descriptive names (see test-naming rule) |
 | **Playwright screenshots** | Binary data for LLM | Use `screenshot: 'off'` |
 
 ## Test File Organization
@@ -408,7 +409,7 @@ mocks/
 - [ ] JSON reporter configured (`reporters: ['json']`)
 - [ ] Output file specified (`outputFile: './test-results.json'`)
 - [ ] Silent mode enabled (`silent: true`)
-- [ ] Test names use `TEST_{DOMAIN}_{SEQ}:` prefix
+- [ ] Test names are behavior-descriptive (see quality-gates/test-naming)
 - [ ] Playwright uses JSON reporter, no screenshots
 - [ ] No `console.log` in test files
 - [ ] CI runs with `2>/dev/null` to suppress stderr
